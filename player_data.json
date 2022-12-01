@@ -2,105 +2,39 @@
     "g": {
         "password": "g",
         "item_bag": {
-            "potion": 6
+            "potion": 5
         },
         "money": {
-            "money": 9000
+            "money": 200
         },
         "character1": {
-            "name": "gg",
-            "exp": 1000,
-            "hp": 100,
-            "weapon": {
-                "name": "Silver Sword",
-                "level": 5
-            },
-            "armor": {
-                "name": "Wood Armor",
-                "level": 1
-            }
-        },
-        "character2": {
             "name": "ggg",
             "exp": 1000,
             "hp": 100,
             "weapon": {
-                "name": "Silver Sword",
-                "level": 5
-            },
-            "armor": {
-                "name": "wood armor",
-                "level": 1
-            }
-        }
-    },
-    "kimmy": {
-        "password": "123",
-        "item_bag": {
-            "potion": 5
-        },
-        "money": {
-            "money": 200
-        },
-        "character1": {
-            "name": "pui",
-            "exp": 1000,
-            "hp": 100,
-            "weapon": {
-                "name": "Wood Hummer",
-                "level": 1
-            },
-            "armor": {
-                "name": "Wood Armor",
-                "level": 1
-            }
-        },
-        "character2": {
-            "name": "pang",
-            "exp": 1000,
-            "hp": 100,
-            "weapon": {
-                "name": "wood sword",
-                "level": 1
-            },
-            "armor": {
-                "name": "wood armor",
-                "level": 1
-            }
-        }
-    },
-    "nua": {
-        "password": "123",
-        "item_bag": {
-            "potion": 5
-        },
-        "money": {
-            "money": 200
-        },
-        "character1": {
-            "name": "banana",
-            "exp": 1000,
-            "hp": 100,
-            "weapon": {
-                "name": "Wood Hummer",
-                "level": 1
-            },
-            "armor": {
-                "name": "Wood Armor",
-                "level": 1
-            }
-        },
-        "character2": {
-            "name": "apple",
-            "exp": 1000,
-            "hp": 100,
-            "weapon": {
                 "name": "Wood Sword",
-                "level": 1
+                "level": 1,
+                "power": 10
             },
             "armor": {
                 "name": "Wood Armor",
-                "level": 1
+                "level": 1,
+                "power": 10
+            }
+        },
+        "character2": {
+            "name": "gg",
+            "exp": 1000,
+            "hp": 100,
+            "weapon": {
+                "name": "Wood Bow",
+                "level": 1,
+                "power": 10
+            },
+            "armor": {
+                "name": "Wood Armor",
+                "level": 1,
+                "power": 10
             }
         }
     }

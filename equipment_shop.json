@@ -2,25 +2,30 @@
     "Weapon": {
         "Silver Sword": {
             "level": 5,
-            "price": 500
+            "price": 500,
+            "power": 20
         },
         "Silver Bow": {
             "level": 5,
-            "price": 500
+            "price": 500,
+            "power": 20
         },
         "Silver Hummer": {
             "level": 5,
-            "price": 500
+            "price": 500,
+            "power": 20
         }
     },
     "Armor": {
         "Silver Armor": {
             "level": 5,
-            "price": 500
+            "price": 500,
+            "power": 20
         },
         "Gold Armor": {
             "level": 10,
-            "price": 1000
+            "price": 1000,
+            "power": 20
         }
     }
 }
