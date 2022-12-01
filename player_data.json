@@ -12,12 +12,12 @@
             "exp": 1000,
             "hp": 100,
             "weapon": {
-                "weapon": "Wood Hummer",
-                "lv": 1
+                "name": "Wood Hummer",
+                "level": 1
             },
             "armor": {
-                "armor": "Wood Armor",
-                "lv": 1
+                "name": "Wood Armor",
+                "level": 1
             }
         },
         "character2": {
@@ -25,12 +25,12 @@
             "exp": 1000,
             "hp": 100,
             "weapon": {
-                "weapon": "wood sword",
-                "lv": 1
+                "name": "wood sword",
+                "level": 1
             },
             "armor": {
-                "armor": "wood armor",
-                "lv": 1
+                "name": "wood armor",
+                "level": 1
             }
         }
     },
@@ -47,12 +47,12 @@
             "exp": 1000,
             "hp": 100,
             "weapon": {
-                "weapon": "Wood Hummer",
-                "lv": 1
+                "name": "Wood Hummer",
+                "level": 1
             },
             "armor": {
-                "armor": "Wood Armor",
-                "lv": 1
+                "name": "Wood Armor",
+                "level": 1
             }
         },
         "character2": {
@@ -60,12 +60,12 @@
             "exp": 1000,
             "hp": 100,
             "weapon": {
-                "weapon": "wood sword",
-                "lv": 1
+                "name": "wood sword",
+                "level": 1
             },
             "armor": {
-                "armor": "wood armor",
-                "lv": 1
+                "name": "wood armor",
+                "level": 1
             }
         }
     }

@@ -28,11 +28,11 @@ def register():
             print(" >>System: please choose number 1 - 3.")
             number = input(" Enter number: ")
         if number == "1":
-            weapon = {"weapon": "Wood Sword", "lv": 1}
+            weapon = {"name": "Wood Sword", "level": 1}
         elif number == "2":
-            weapon = {"weapon": "Wood Bow", "lv": 1}
+            weapon = {"name": "Wood Bow", "level": 1}
         elif number == "3":
-            weapon = {"weapon": "Wood Hummer", "lv": 1}
+            weapon = {"name": "Wood Hummer", "level": 1}
 
         new_player = {
             username: {
@@ -44,7 +44,7 @@ def register():
                     "exp": 1000,
                     "hp": 100,
                     "weapon": weapon,
-                    "armor": {"armor": "Wood Armor", "lv": 1},
+                    "armor": {"name": "Wood Armor", "level": 1},
                 }
             }
         }
@@ -68,11 +68,11 @@ def register():
             print(" >>System: pls choose number 1 - 3.")
             number = input(" Enter number: ")
         if number == "1":
-            weapon = {"weapon": "Wood Sword", "lv": 1}
+            weapon = {"name": "Wood Sword", "level": 1}
         elif number == "2":
-            weapon = {"weapon": "Wood Bow", "lv": 1}
+            weapon = {"name": "Wood Bow", "level": 1}
         elif number == "3":
-            weapon = {"weapon": "Wood Hummer", "lv": 1}
+            weapon = {"name": "Wood Hummer", "level": 1}
 
         new_player = {
             username: {
@@ -84,7 +84,7 @@ def register():
                     "exp": 1000,
                     "hp": 100,
                     "weapon": weapon,
-                    "armor": {"armor": "Wood Armor", "lv": 1},
+                    "armor": {"name": "Wood Armor", "level": 1},
                 }
             }
         }
@@ -156,8 +156,8 @@ def add_character(username):
                                             "name": name,
                                             "exp": 1000,
                                             "hp": 100,
-                                            "weapon": {"weapon": "wood sword", "lv": 1},
-                                            "armor": {"armor": "wood armor", "lv": 1},
+                                            "weapon": {"name": "Wood Sword", "level": 1},
+                                            "armor": {"name": "Wood Armor", "level": 1},
                                         }
             with open("player_data.json", "w") as data_file:
                 json.dump(data, data_file, indent=4)
@@ -235,8 +235,8 @@ class Character:
                f" Name: {self.name}\n"\
                f" Hp: {self.hp}\n"\
                f" Level: {self.level}\n"\
-               f" Weapon: {self.weapon['weapon']}[lv.{self.weapon['lv']}]\n"\
-               f" Armor: {self.armor['armor']}[lv.{self.armor['lv']}]\n"\
+               f" Weapon: {self.weapon['weapon']}[lv.{self.weapon['level']}]\n"\
+               f" Armor: {self.armor['armor']}[lv.{self.armor['level']}]\n"\
                f" Money: {self.money['money']}-c"
 
 
@@ -273,8 +273,19 @@ class Shop:
                     f" {i}. {name} lv.{self.equipment_shop[type_][name]['level']} {self.equipment_shop[type_][name]['price']}-c.")
                 i += 1
 
-    def buy_equipment(self):
-        print("You buy it!")
+    def buy_equipment(self, equipment):
+        for type_ in self.equipment_shop:
+            for name in self.equipment_shop[type_]:
+                if type_ == "Weapon":
+                    if equipment == name:
+                        self.pyb.weapon['name'] = self.equipment_shop[type_][equipment]
+                        self.pyb.weapon['lv'] = self.equipment_shop[type_][equipment]['level']
+                        self.pyb.money['money'] -= self.equipment_shop[type_][equipment]['price']
+                elif type_ == "Armor":
+                    if equipment == name:
+                        self.pyb.weapon['name'] = self.equipment_shop[type_][equipment]
+                        self.pyb.weapon['lv'] = self.equipment_shop[type_][equipment]['level']
+                        self.pyb.money['money'] -= self.equipment_shop[type_][equipment]['price']
 
     def sell_equipment(self):
         pass
