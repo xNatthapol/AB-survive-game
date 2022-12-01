@@ -14,7 +14,7 @@
             "power": 20
         },
         "money": 1000,
-        "exp": 5000,
+        "exp": 4000,
         "item": {
             "name": "banana",
             "many": 10

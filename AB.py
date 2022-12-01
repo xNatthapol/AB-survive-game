@@ -41,8 +41,8 @@ def register():
                 "money": {"money": 200},
                 "character1": {
                     "name": name,
-                    "exp": 1000,
-                    "hp": 100,
+                    "exp": {"exp": 1000},
+                    "hp": {"hp": 100},
                     "weapon": weapon,
                     "armor": {"name": "Wood Armor", "level": 1, "power": 10},
                 }
@@ -81,8 +81,8 @@ def register():
                 "money": {"money": 200},
                 "character1": {
                     "name": name,
-                    "exp": 1000,
-                    "hp": 100,
+                    "exp": {"exp": 1000},
+                    "hp": {"hp": 100},
                     "weapon": weapon,
                     "armor": {"name": "Wood Armor", "level": 1, "power": 10},
                 }
@@ -92,7 +92,7 @@ def register():
         data.update(new_player)
         with open("player_data.json", "w") as data_file:
             json.dump(data, data_file, indent=4)
-
+    return username
 
 def login():
     print('-' * 50)
@@ -114,7 +114,8 @@ def login():
         print('-' * 50)
         print(f"{'You are the first player!':^50}")
         print('-' * 50)
-        register()
+        username = register()
+        return username
 
 
 def add_character(username):
@@ -169,8 +170,8 @@ def add_character(username):
                 weapon = {"name": "Wood Hummer", "level": 1, "power": 10}
             data[username][f'character{str(count+1)}'] = {
                                             "name": name,
-                                            "exp": 1000,
-                                            "hp": 100,
+                                            "exp": {"exp": 1000},
+                                            "hp": {"hp": 100},
                                             "weapon": weapon,
                                             "armor": {"name": "Wood Armor", "level": 1, "power": 10},
                                         }
@@ -212,11 +213,13 @@ class Character:
 
     @property
     def hp(self):
-        return (self.__exp//1000) * 100
+        return (self.__exp['exp']//1000) * 100
 
+    def exp(self):
+        return self.__exp
     @property
     def level(self):
-        return self.__exp//1000
+        return self.__exp['exp']//1000
 
     @property
     def weapon(self):
@@ -309,15 +312,15 @@ class Shop:
     def buy(self, item_name):
         if item_name in self.pyb.item_bag:
             self.pyb.item_bag[item_name] += 1
-            self.pyb.money["money"] -= self.item_shop[item_name]
+            self.pyb.money['money'] -= self.item_shop[item_name]
         else:
             self.pyb.item_bag[item_name] = 1
-            self.pyb.money["money"] -= self.item_shop[item_name]
+            self.pyb.money['money'] -= self.item_shop[item_name]
 
     def sell(self, item_name):
         if item_name in self.pyb.item_bag:
             self.pyb.item_bag[item_name] -= 1
-            self.pyb.money["money"] += self.item_shop[item_name]
+            self.pyb.money['money'] += self.item_shop[item_name]
             if self.pyb.item_bag[item_name] == 0:
                 self.pyb.item_bag.pop(item_name)
         else:
@@ -396,9 +399,13 @@ class AB:
     def cb(self):
         return self.__cb
 
-
     def attack(self):
-        pass
+        print('-' * 50)
+        print(f"{'- Battle -':^50}")
+        print('-' * 50)
+        for cha in self.party:
+            if cha != {}:
+                print(f" {cha.name}")
 
 
     def use_item(self):
@@ -413,6 +420,9 @@ class AB:
 
     def armor_change(self):
         pass
+
+    def __repr__(self):
+        return f"{self.party}, {self.cb}"
 
     # def update_exp(self):
     #     pass
@@ -495,9 +505,9 @@ while True:
     print(" 5. Shop")
     print(" 6. Boss List")
     print(" 7. Exit without save")
-    print(" 8. Exit and save game")
+    print(" 8. Exit and save")
     number = input(" Enter number: ")
-    while number != "1" and number != "2" and number != "3" and number != "4" and number != "5" and number != "6" and number != "7":
+    while number != "1" and number != "2" and number != "3" and number != "4" and number != "5" and number != "6" and number != "7" and number != "8":
         print(" >>System: please choose number 1 - 8.")
         number = input(" Enter number: ")
     if number == "1":
@@ -519,8 +529,6 @@ while True:
         boss_ = list_boss[int(number)-1]
         boss_choose_data = data_boss[boss_]
 
-        # boss_name, boss_hp, boss_level, boss_weapon, boss_money, boss_exp_earn, boss_item_drop, boss_armor_drop
-
         boss_choose = Boss(boss_choose_data['name'],
                            boss_choose_data['hp'],
                            boss_choose_data['level'],
@@ -529,6 +537,8 @@ while True:
                            boss_choose_data['money'],
                            boss_choose_data['exp'],
                            boss_choose_data['item'])
+        ab = AB(character_1, character_2, character_3, boss_choose)
+
         while True:
             print('=' * 50)
             print(f"{'- Attack Boss -':^50}")
@@ -542,13 +552,10 @@ while True:
                 print(" >>System: please choose number 1 - 4.")
                 number = input(" Enter number: ")
             if number == "1":
-                pass
+                ab.attack()
             elif number == "2":
                 pass
             elif number == "3":
-                print('=' * 50)
-                print(f"{'Boss info':^50}")
-                print('=' * 50)
                 print(boss_choose)
             elif number == "4":
                 break
@@ -736,9 +743,3 @@ while True:
             json.dump(data, data_file, indent=4)
         sys.exit()
 
-
-# p = Character()
-# q = Character()
-# r = Character()
-#
-# player = [p, q, r]
