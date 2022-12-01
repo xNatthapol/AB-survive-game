@@ -1,0 +1,10 @@
+{
+    "Silver Armor": {
+        "level": 20,
+        "price": 500
+    },
+    "Gold Armor ": {
+        "level": 20,
+        "price": 1000
+    }
+}

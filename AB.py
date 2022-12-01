@@ -348,9 +348,7 @@ class Boss:
 
 class AB:
     def __init__(self, cha1, cha2, cha3, cb):
-        self.cha1 = cha1
-        self.cha2 = cha2
-        self.cha3 = cha3
+        self.party = [cha1, cha2, cha3]
         self.cb = cb
 
 
