@@ -383,11 +383,18 @@ class Boss:
                f" Armor drop: {self.boss_armor_drop['name']}[lv.{self.boss_armor_drop['level']}][DEF:{self.boss_armor_drop['power']}]"
 
 
-
 class AB:
     def __init__(self, cha1, cha2, cha3, cb):
-        self.party = [cha1, cha2, cha3]
-        self.cb = cb
+        self.__party = [cha1, cha2, cha3]
+        self.__cb = cb
+
+    @property
+    def party(self):
+        return self.__party
+
+    @property
+    def cb(self):
+        return self.__cb
 
 
     def attack(self):
