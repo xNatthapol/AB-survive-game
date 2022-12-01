@@ -1,5 +1,6 @@
 import csv
 import json
+import os
 from json.decoder import JSONDecodeError
 import sys
 import turtle
@@ -240,8 +241,9 @@ class Character:
 
 
 class Shop:
-    def __init__(self, item_shop, pyb):
+    def __init__(self, item_shop, equipment_shop, pyb):
         self.__item_shop = item_shop
+        self.__equipment_shop = equipment_shop
         self.__pyb = pyb
 
     @property
@@ -249,25 +251,30 @@ class Shop:
         return self.__item_shop
 
     @property
+    def equipment_shop(self):
+        return self.__equipment_shop
+
+    @property
     def pyb(self):
         return self.__pyb
 
     def show_item_shop(self):
-        print('-' * 50)
-        print(f"{'Item Shop':^50}")
-        print('-' * 50)
         i = 1
         for item, price in self.item_shop.items():
             print(f" {i}. {item} {price}-c.")
             i += 1
 
     def show_equipment_shop(self):
-        print('-' * 50)
-        print(f"{'Equipment Shop':^50}")
-        print('-' * 50)
+        for type_ in self.equipment_shop:
+            i = 1
+            print(f"{f'---- {type_} ----':^10}")
+            for name in self.equipment_shop[type_]:
+                print(
+                    f" {i}. {name} lv.{self.equipment_shop[type_][name]['level']} {self.equipment_shop[type_][name]['price']}-c.")
+                i += 1
 
     def buy_equipment(self):
-        pass
+        print("You buy it!")
 
     def sell_equipment(self):
         pass
@@ -398,6 +405,7 @@ print(f"{'Welcome to AB survive game':^50}")
 print('=' * 50)
 username = system_login()
 
+
 with open("player_data.json", "r") as data_file:
     data = json.load(data_file)
 
@@ -493,36 +501,102 @@ while True:
     elif number == "4":
         character_1.show_item_bag()
     elif number == "5":
+        print('-' * 50)
+        print(f"{'Shop':^50}")
+        print('-' * 50)
+        print(" 1. Item Shop")
+        print(" 2. Equipment Shop")
+        number = input(" Enter number: ")
+        while number != "1" and number != "2":
+            print(" >>System: please choose number 1 or 2.")
+            number = input(" Enter number: ")
+
         with open("item_shop.json", "r") as data_file:
             data_shop_item = json.load(data_file)
 
-        shop = Shop(data_shop_item, character_1)
-        shop.show_item_shop()
-        print(" You want to (b)buy or (s)sell ?")
-        choice = input(" If you dont want press enter: ")
-        while choice != "b" and choice != "s" and choice != "":
-            print(" >>System: please choose b or s or enter.")
-            print(" You want to (b)buy or (s)sell")
+        with open("equipment_shop.json", "r") as data_file:
+            data_shop_equipment = json.load(data_file)
+
+        shop = Shop(data_shop_item, data_shop_equipment, character_1)
+
+        if number == "1":
+            print('-' * 50)
+            print(f"{'Item Shop':^50}")
+            print('-' * 50)
+            shop.show_item_shop()
+            print(" You want to (b)buy or (s)sell ?")
             choice = input(" If you dont want press enter: ")
-        if choice == "b":
-            print(" Which one you want to buy?")
-            number = input(" If you dont want press enter: ")
-            if number == "1":
-                shop.buy("potion")
-            elif number == "2":
-                shop.buy("magic block")
-            elif number == "3":
-                shop.buy("shield")
-        elif choice == "s":
-            character_1.show_item_bag()
-            print(" Which one you want to sell?")
-            number = input(" If you dont want press enter: ")
-            if number == "1":
-                shop.sell("potion")
-            elif number == "2":
-                shop.sell("magic block")
-            elif number == "3":
-                shop.sell("shield")
+            while choice != "b" and choice != "s" and choice != "":
+                print(" >>System: please choose b or s or enter.")
+                print(" You want to (b)buy or (s)sell")
+                choice = input(" If you dont want press enter: ")
+            if choice == "b":
+                print('-' * 50)
+                print(f"{'Buy Item':^50}")
+                print('-' * 50)
+                shop.show_item_shop()
+                print(" Which one you want to buy?")
+                number = input(" If you dont want press enter: ")
+                if number == "1":
+                    shop.buy("potion")
+                elif number == "2":
+                    shop.buy("magic block")
+                elif number == "3":
+                    shop.buy("shield")
+            elif choice == "s":
+                print('-' * 50)
+                print(f"{'Sell Item':^50}")
+                print('-' * 50)
+                character_1.show_item_bag()
+                print(" Which one you want to sell?")
+                number = input(" If you dont want press enter: ")
+                if number == "1":
+                    shop.sell("potion")
+                elif number == "2":
+                    shop.sell("magic block")
+                elif number == "3":
+                    shop.sell("shield")
+        elif number == "2":
+            print('-' * 50)
+            print(f"{'Equipment Shop':^50}")
+            print('-' * 50)
+            shop.show_equipment_shop()
+            print(" You want to (b)buy or (s)sell ?")
+            choice = input(" If you dont want press enter: ")
+            while choice != "b" and choice != "s" and choice != "":
+                print(" >>System: please choose b or s or enter.")
+                print(" You want to (b)buy or (s)sell")
+                choice = input(" If you dont want press enter: ")
+            if choice == "b":
+                print('-' * 50)
+                print(f"{'Buy equipment':^50}")
+                print('-' * 50)
+                shop.show_equipment_shop()
+                print(" Which one you want to buy?")
+                print(" - Ex. If you want Silver Sword enter w1")
+                print(" --- w from Weapon and 1 from first weapon")
+                number = input(" If you dont want press enter: ")
+                if number == "w1":
+                    shop.buy_equipment()
+                elif number == "2":
+                    shop.buy_equipment()
+                elif number == "3":
+                    shop.buy_equipment()
+            elif choice == "s":
+                print('-' * 50)
+                print(f"{'Sell equipment':^50}")
+                print('-' * 50)
+                character_1.show_item_bag()
+                print(" Which one you want to sell?")
+                number = input(" If you dont want press enter: ")
+                if number == "1":
+                    shop.sell("potion")
+                elif number == "2":
+                    shop.sell("magic block")
+                elif number == "3":
+                    shop.sell("shield")
+
+
     elif number == "6":
         with open("player_data.json", "r") as data_file:
             data = json.load(data_file)
