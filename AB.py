@@ -235,8 +235,8 @@ class Character:
                f" Name: {self.name}\n"\
                f" Hp: {self.hp}\n"\
                f" Level: {self.level}\n"\
-               f" Weapon: {self.weapon['weapon']}[lv.{self.weapon['level']}]\n"\
-               f" Armor: {self.armor['armor']}[lv.{self.armor['level']}]\n"\
+               f" Weapon: {self.weapon['name']}[lv.{self.weapon['level']}]\n"\
+               f" Armor: {self.armor['name']}[lv.{self.armor['level']}]\n"\
                f" Money: {self.money['money']}-c"
 
 
@@ -277,14 +277,14 @@ class Shop:
         for type_ in self.equipment_shop:
             for name in self.equipment_shop[type_]:
                 if type_ == "Weapon":
-                    if equipment == name:
-                        self.pyb.weapon['name'] = self.equipment_shop[type_][equipment]
-                        self.pyb.weapon['lv'] = self.equipment_shop[type_][equipment]['level']
+                    if name == equipment:
+                        self.pyb.weapon['name'] = equipment
+                        self.pyb.weapon['level'] = self.equipment_shop[type_][equipment]['level']
                         self.pyb.money['money'] -= self.equipment_shop[type_][equipment]['price']
                 elif type_ == "Armor":
-                    if equipment == name:
-                        self.pyb.weapon['name'] = self.equipment_shop[type_][equipment]
-                        self.pyb.weapon['lv'] = self.equipment_shop[type_][equipment]['level']
+                    if name == equipment:
+                        self.pyb.weapon['name'] = equipment
+                        self.pyb.weapon['level'] = self.equipment_shop[type_][equipment]['level']
                         self.pyb.money['money'] -= self.equipment_shop[type_][equipment]['price']
 
     def sell_equipment(self):
@@ -588,11 +588,16 @@ while True:
                 print(" --- w from Weapon and 1 from first weapon")
                 number = input(" If you dont want press enter: ")
                 if number == "w1":
-                    shop.buy_equipment()
-                elif number == "2":
-                    shop.buy_equipment()
-                elif number == "3":
-                    shop.buy_equipment()
+                    shop.buy_equipment("Silver Sword")
+                elif number == "w2":
+                    shop.buy_equipment("Silver Bow")
+                elif number == "w3":
+                    shop.buy_equipment("Silver Hummer")
+                elif number == "a1":
+                    shop.buy_equipment("Silver Armor")
+                elif number == "a2":
+                    shop.buy_equipment("Gold Armor")
+
             elif choice == "s":
                 print('-' * 50)
                 print(f"{'Sell equipment':^50}")
