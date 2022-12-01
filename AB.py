@@ -254,7 +254,7 @@ class Shop:
 
     def show_item_shop(self):
         print('-' * 50)
-        print(f"{'Shop':^50}")
+        print(f"{'Item Shop':^50}")
         print('-' * 50)
         i = 1
         for item, price in self.item_shop.items():
@@ -262,7 +262,9 @@ class Shop:
             i += 1
 
     def show_equipment_shop(self):
-        pass
+        print('-' * 50)
+        print(f"{'Equipment Shop':^50}")
+        print('-' * 50)
 
     def buy_equipment(self):
         pass
