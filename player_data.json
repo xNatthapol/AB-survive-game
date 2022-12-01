@@ -1,0 +1,72 @@
+{
+    "g": {
+        "password": "g",
+        "item_bag": {
+            "potion": 6
+        },
+        "money": {
+            "money": 190
+        },
+        "character1": {
+            "name": "gg",
+            "exp": 1000,
+            "hp": 100,
+            "weapon": {
+                "weapon": "Wood Hummer",
+                "lv": 1
+            },
+            "armor": {
+                "armor": "Wood Armor",
+                "lv": 1
+            }
+        },
+        "character2": {
+            "name": "ggg",
+            "exp": 1000,
+            "hp": 100,
+            "weapon": {
+                "weapon": "wood sword",
+                "lv": 1
+            },
+            "armor": {
+                "armor": "wood armor",
+                "lv": 1
+            }
+        }
+    },
+    "kimmy": {
+        "password": "123",
+        "item_bag": {
+            "potion": 5
+        },
+        "money": {
+            "money": 200
+        },
+        "character1": {
+            "name": "pui",
+            "exp": 1000,
+            "hp": 100,
+            "weapon": {
+                "weapon": "Wood Hummer",
+                "lv": 1
+            },
+            "armor": {
+                "armor": "Wood Armor",
+                "lv": 1
+            }
+        },
+        "character2": {
+            "name": "pang",
+            "exp": 1000,
+            "hp": 100,
+            "weapon": {
+                "weapon": "wood sword",
+                "lv": 1
+            },
+            "armor": {
+                "armor": "wood armor",
+                "lv": 1
+            }
+        }
+    }
+}
