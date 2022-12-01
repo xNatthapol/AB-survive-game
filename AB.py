@@ -308,13 +308,13 @@ class Shop:
 
 
 class Boss:
-    def __init__(self, boss_name, boss_hp, boss_level, boss_weapon, boss_money, boss_level_earn, boss_item_drop, boss_weapon_drop, boss_armor_drop):
+    def __init__(self, boss_name, boss_hp, boss_level, boss_weapon, boss_money, boss_exp_earn, boss_item_drop, boss_weapon_drop, boss_armor_drop):
         self.__boss_name = boss_name
         self.__boss_hp = boss_hp
         self.__boss_level = boss_level
         self.__boss_weapon = boss_weapon
         self.__boss_money = boss_money
-        self.__boss_level_earn = boss_level_earn
+        self.__boss_exp_earn = boss_exp_earn
         self.__boss_item_drop = boss_item_drop
         self.__boss_weapon_drop = boss_weapon_drop
         self.__boss_armor_drop = boss_armor_drop
@@ -346,8 +346,8 @@ class Boss:
 
 
     @property
-    def boss_level_earn(self):
-        return self.__boss_level_earn
+    def boss_exp_earn(self):
+        return self.__boss_exp_earn
 
 
     @property
@@ -362,6 +362,21 @@ class Boss:
     @property
     def boss_armor_drop(self):
         return self.__boss_armor_drop
+
+    def __repr__(self):
+        return f"{'-' * 50}\n" \
+               f"{'Boss info':^50}\n" \
+               f"{'-' * 50}\n" \
+               f" Name: {self.boss_name}\n" \
+               f" Hp: {self.boss_hp}\n" \
+               f" Level: {self.boss_level}\n" \
+               f" Weapon: {self.boss_weapon['name']}[lv.{self.boss_weapon['level']}]\n" \
+               f" Money earn: {self.boss_money['money']}-c" \
+               f" Exp earn: {self.boss_exp_earn}\n" \
+               f" Item drop: {self.boss_item_drop['name']} {self.boss_item_drop['many']}\n" \
+               f" Weapon drop: {self.boss_weapon_drop['name']}[lv.{self.boss_weapon_drop['level']}]\n" \
+               f" Armor drop: {self.boss_armor_drop['name']}[lv.{self.boss_armor_drop['level']}]"
+
 
 
 class AB:
@@ -447,18 +462,19 @@ if 'character3' in data_player:
                             data_player['item_bag'])
 
 while True:
-    print('-' * 50)
+    print('=' * 50)
     print(f"{'- Menu -':^50}")
-    print('-' * 50)
+    print('=' * 50)
     print(" 1. Attack Boss")
     print(" 2. Show character player info")
     print(" 3. Add character")
     print(" 4. Bag")
     print(" 5. Shop")
     print(" 6. Exit and save game")
+    print(" 7. Exit without save")
     number = input(" Enter number: ")
-    while number != "1" and number != "2" and number != "3" and number != "4" and number != "5" and number != "6":
-        print(" >>System: please choose number 1 - 6.")
+    while number != "1" and number != "2" and number != "3" and number != "4" and number != "5" and number != "6" and number != "7":
+        print(" >>System: please choose number 1 - 7.")
         number = input(" Enter number: ")
     if number == "1":
         pass
@@ -632,35 +648,8 @@ while True:
         with open("player_data.json", "w") as data_file:
             json.dump(data, data_file, indent=4)
         sys.exit()
-
-
-
-
-
-
-
-
-# print(character_1)
-# print(character_2)
-# print(character_1.item_bag)
-# print(character_2.item_bag)
-# print(character_1.money)
-# print(character_2.money)
-
-
-# print(character_2)
-# print(character_3)
-# print(data_player)
-
-# wp = {'weapon': ['Wood sword', 1]}
-# ar = {'armor': ['Wood armor', 1]}
-# bg = {'Banana': 3, 'Apple': 5, 'gal':5}
-# shop = {'hal': 10, 'gal': 20}
-# a = Character("Sato", 1000, 1000, wp, ar, 1000, bg)
-# # name, hp, exp, weapon, armor, money, item_bag
-# print(a)
-# # # b = Shop(shop, a)
-
+    elif number == "7":
+        sys.exit()
 
 
 # p = Character()
