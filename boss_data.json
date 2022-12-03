@@ -1,20 +1,28 @@
 {
     "KingKong": {
         "name": "KingKong",
-        "hp": 800,
-        "level": 10,
+        "hp": {
+            "hp": 800
+        },
+        "level": {
+            "level": 10
+        },
         "weapon": {
             "name": "Banana",
             "level": 10,
-            "power": 30
+            "power": 20
         },
         "armor": {
             "name": "Banana armor",
             "level": 10,
             "power": 20
         },
-        "money": 1000,
-        "exp": 4000,
+        "money": {
+            "money": 1000
+        },
+        "exp": {
+            "exp": 400
+        },
         "item": {
             "name": "banana",
             "many": 10

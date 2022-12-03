@@ -199,9 +199,10 @@ def system_login():
 
 
 class Character:
-    def __init__(self, name, exp, weapon, armor, money, item_bag):
+    def __init__(self, name, exp, hp, weapon, armor, money, item_bag):
         self.__name = name
         self.__exp = exp
+        self.__hp = hp
         self.__weapon = weapon
         self.__armor = armor
         self.__money = money
@@ -213,10 +214,11 @@ class Character:
 
     @property
     def hp(self):
-        return (self.__exp['exp']//1000) * 100
+        return self.__hp
 
     def exp(self):
         return self.__exp
+
     @property
     def level(self):
         return self.__exp['exp']//1000
@@ -251,7 +253,7 @@ class Character:
                f"{'Character info':^50}\n"\
                f"{'-' * 50}\n"\
                f" Name: {self.name}\n"\
-               f" Hp: {self.hp}\n"\
+               f" Hp: {self.hp['hp']}\n"\
                f" Level: {self.level}\n"\
                f" Weapon: {self.weapon['name']}[lv.{self.weapon['level']}][ATK:{self.weapon['power']}]\n"\
                f" Armor: {self.armor['name']}[lv.{self.armor['level']}][DEF:{self.armor['power']}]\n"\
@@ -376,11 +378,11 @@ class Boss:
                f"{'Boss info':^50}\n" \
                f"{'-' * 50}\n" \
                f" Name: {self.boss_name}\n" \
-               f" Hp: {self.boss_hp}\n" \
-               f" Level: {self.boss_level}\n" \
+               f" Hp: {self.boss_hp['hp']}\n" \
+               f" Level: {self.boss_level['level']}\n" \
                f" Weapon: {self.boss_weapon['name']}[lv.{self.boss_weapon['level']}][ATK:{self.boss_weapon['power']}]\n" \
-               f" Money earn: {self.boss_money}-c\n" \
-               f" Exp earn: {self.boss_exp_earn}\n" \
+               f" Money earn: {self.boss_money['money']}-c\n" \
+               f" Exp earn: {self.boss_exp_earn['exp']}\n" \
                f" Item drop: {self.boss_item_drop['name']} {self.boss_item_drop['many']}\n" \
                f" Weapon drop: {self.boss_weapon['name']}[lv.{self.boss_weapon['level']}][ATK:{self.boss_weapon['power']}]\n" \
                f" Armor drop: {self.boss_armor_drop['name']}[lv.{self.boss_armor_drop['level']}][DEF:{self.boss_armor_drop['power']}]"
@@ -399,13 +401,24 @@ class AB:
     def cb(self):
         return self.__cb
 
-    def attack(self):
+    def attack(self, ulti_count):
         print('-' * 50)
         print(f"{'- Battle -':^50}")
         print('-' * 50)
         for cha in self.party:
             if cha != {}:
-                print(f" {cha.name}")
+                if ulti_count != 4:
+                    self.cb.boss_hp['hp'] -= cha.weapon['power']
+                    cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
+                    print(f" {cha.name} attack {cha.weapon['power']}!")
+                    print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                    os.system('python test333.py')
+                elif ulti_count == 4:
+                    self.cb.boss_hp['hp'] -= cha.weapon['power']*4
+                    cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
+                    print(f" {cha.name} attack {cha.weapon['power']}!")
+                    print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                    os.system('python test222.py')
 
 
     def use_item(self):
@@ -463,6 +476,7 @@ if 'character1' in data_player:
     character_data_1 = data_player['character1']
     character_1 = Character(character_data_1['name'],
                             character_data_1['exp'],
+                            character_data_1['hp'],
                             character_data_1['weapon'],
                             character_data_1['armor'],
                             data_player['money'],
@@ -472,6 +486,7 @@ if 'character2' in data_player:
     character_data_2 = data_player['character2']
     character_2 = Character(character_data_2['name'],
                             character_data_2['exp'],
+                            character_data_2['hp'],
                             character_data_2['weapon'],
                             character_data_2['armor'],
                             data_player['money'],
@@ -481,6 +496,7 @@ if 'character3' in data_player:
     character_data_3 = data_player['character3']
     character_3 = Character(character_data_3['name'],
                             character_data_3['exp'],
+                            character_data_3['hp'],
                             character_data_3['weapon'],
                             character_data_3['armor'],
                             data_player['money'],
@@ -493,6 +509,7 @@ list_boss = []
 for name_boss in data_boss:
     list_boss.append(name_boss)
 
+ulti_count = 0
 
 while True:
     print('=' * 50)
@@ -552,7 +569,8 @@ while True:
                 print(" >>System: please choose number 1 - 4.")
                 number = input(" Enter number: ")
             if number == "1":
-                ab.attack()
+                ab.attack(ulti_count)
+                ulti_count += 1
             elif number == "2":
                 pass
             elif number == "3":
