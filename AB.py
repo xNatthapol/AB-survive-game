@@ -1,10 +1,7 @@
-import csv
 import json
 import os
 from json.decoder import JSONDecodeError
 import sys
-import turtle
-import time
 
 
 def register():
@@ -407,18 +404,18 @@ class AB:
         print('-' * 50)
         for cha in self.party:
             if cha != {}:
-                if ulti_count != 4:
+                if ulti_count != 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
                     print(f" {cha.name} attack {cha.weapon['power']}!")
                     print(f" Boss hp: {self.cb.boss_hp['hp']}")
-                    os.system('python test333.py')
-                elif ulti_count == 4:
-                    self.cb.boss_hp['hp'] -= cha.weapon['power']*4
+                    # os.system('python test222.py')
+                elif ulti_count == 3:
+                    self.cb.boss_hp['hp'] -= cha.weapon['power']*10
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
-                    print(f" {cha.name} attack {cha.weapon['power']}!")
+                    print(f" {cha.name} attack {cha.weapon['power']*10}!")
                     print(f" Boss hp: {self.cb.boss_hp['hp']}")
-                    os.system('python test222.py')
+                    # os.system('python test333.py')
 
 
     def use_item(self):
@@ -570,7 +567,11 @@ while True:
                 number = input(" Enter number: ")
             if number == "1":
                 ab.attack(ulti_count)
-                ulti_count += 1
+                if ulti_count < 3:
+                    ulti_count += 1
+                elif ulti_count == 3:
+                    ulti_count -= 3
+                print(ulti_count)
             elif number == "2":
                 pass
             elif number == "3":

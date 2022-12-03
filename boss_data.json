@@ -2,7 +2,7 @@
     "KingKong": {
         "name": "KingKong",
         "hp": {
-            "hp": 800
+            "hp": 250
         },
         "level": {
             "level": 10
