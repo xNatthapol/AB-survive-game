@@ -571,7 +571,6 @@ while True:
                     ulti_count += 1
                 elif ulti_count == 3:
                     ulti_count -= 3
-                print(ulti_count)
             elif number == "2":
                 pass
             elif number == "3":
