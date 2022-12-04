@@ -595,6 +595,7 @@ while True:
             character_data_1 = data_player['character1']
             character_1 = Character(character_data_1['name'],
                                     character_data_1['exp'],
+                                    character_data_1['hp'],
                                     character_data_1['weapon'],
                                     character_data_1['armor'],
                                     data_player['money'],
@@ -604,6 +605,7 @@ while True:
             character_data_2 = data_player['character2']
             character_2 = Character(character_data_2['name'],
                                     character_data_2['exp'],
+                                    character_data_1['hp'],
                                     character_data_2['weapon'],
                                     character_data_2['armor'],
                                     data_player['money'],
@@ -613,6 +615,7 @@ while True:
             character_data_3 = data_player['character3']
             character_3 = Character(character_data_3['name'],
                                     character_data_3['exp'],
+                                    character_data_1['hp'],
                                     character_data_3['weapon'],
                                     character_data_3['armor'],
                                     data_player['money'],

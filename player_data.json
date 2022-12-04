@@ -45,6 +45,25 @@
                 "level": 1,
                 "power": 10
             }
+        },
+        "character3": {
+            "name": "Garo",
+            "exp": {
+                "exp": 1000
+            },
+            "hp": {
+                "hp": 100
+            },
+            "weapon": {
+                "name": "Wood Hummer",
+                "level": 1,
+                "power": 10
+            },
+            "armor": {
+                "name": "Wood Armor",
+                "level": 1,
+                "power": 10
+            }
         }
     }
 }
