@@ -403,19 +403,31 @@ class AB:
         print(f"{'- Battle -':^50}")
         print('-' * 50)
         for cha in self.party:
-            if cha != {}:
+            if cha != {} and cha.hp['hp'] > 0:
                 if ulti_count != 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
-                    print(f" {cha.name} attack {cha.weapon['power']}!")
-                    print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                    if cha.hp['hp'] > 0:
+                        print(f" {cha.name} attack {cha.weapon['power']}!")
+                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                    elif cha.hp['hp'] <= 0:
+                        print(f" {cha.name} attack {cha.weapon['power']}!")
+                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                        print(f" {cha.name} dead.")
                     # os.system('python test222.py')
                 elif ulti_count == 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']*10
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
-                    print(f" {cha.name} attack {cha.weapon['power']*10}!")
-                    print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                    if cha.hp['hp'] > 0:
+                        print(f" {cha.name} attack {cha.weapon['power']*10}!")
+                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                    elif cha.hp['hp'] <= 0:
+                        print(f" {cha.name} attack {cha.weapon['power']*10}!")
+                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                        print(f" {cha.name} dead.")
                     # os.system('python test333.py')
+            elif cha.hp['hp'] <= 0:
+                print(f"System: character {cha.name} dead.")
 
 
     def use_item(self):
