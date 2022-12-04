@@ -29,7 +29,7 @@ def register():
         elif number == "2":
             weapon = {"name": "Wood Bow", "level": 1, "power": 10}
         elif number == "3":
-            weapon = {"name": "Wood Hummer", "level": 1, "power": 10}
+            weapon = {"name": "Wood Hammer", "level": 1, "power": 10}
 
         new_player = {
             username: {
@@ -59,7 +59,7 @@ def register():
         print(" Starter weapon")
         print(" 1. Sword")
         print(" 2. Bow")
-        print(" 3. Hummer")
+        print(" 3. Hammer")
         number = input(" Enter number: ")
         while number != "1" and number != "2" and number != "3":
             print(" >>System: pls choose number 1 - 3.")
@@ -69,7 +69,7 @@ def register():
         elif number == "2":
             weapon = {"name": "Wood Bow", "level": 1, "power": 10}
         elif number == "3":
-            weapon = {"name": "Wood Hummer", "level": 1, "power": 10}
+            weapon = {"name": "Wood Hammer", "level": 1, "power": 10}
 
         new_player = {
             username: {
@@ -157,7 +157,7 @@ def add_character(username):
             print(" Starter weapon")
             print(" 1. Sword")
             print(" 2. Bow")
-            print(" 3. Hummer")
+            print(" 3. Hammer")
             number = input(" Enter number: ")
             while number != "1" and number != "2" and number != "3":
                 print(" >>System: please choose number 1 - 3.")
@@ -167,7 +167,7 @@ def add_character(username):
             elif number == "2":
                 weapon = {"name": "Wood Bow", "level": 1, "power": 10}
             elif number == "3":
-                weapon = {"name": "Wood Hummer", "level": 1, "power": 10}
+                weapon = {"name": "Wood Hammer", "level": 1, "power": 10}
             data[username][f'character{str(count+1)}'] = {
                                             "name": name,
                                             "exp": {"exp": 1000},
@@ -323,11 +323,12 @@ class Shop:
 
     def sell(self, item_name):
         if item_name in self.pyb.item_bag:
-            self.pyb.item_bag[item_name] -= 1
-            self.pyb.money['money'] += self.item_shop[item_name]
-            if self.pyb.item_bag[item_name] == 0:
+            if self.pyb.item_bag[item_name] > 0:
                 self.pyb.item_bag.pop(item_name)
-            print(f" >>System: you sold {item_name}.")
+            else:
+                self.pyb.item_bag[item_name] -= 1
+                self.pyb.money['money'] += self.item_shop[item_name]
+                print(f" >>System: you sold {item_name}.")
         else:
             return None
 
@@ -444,8 +445,38 @@ class AB:
                 print(f"System: character {cha.name} dead.")
 
 
-    def use_item(self):
-        pass
+    def use_item(self, item_name):
+        print('-' * 50)
+        print(f"{'- Use Item -':^50}")
+        print('-' * 50)
+        i = 0
+        for cha in self.party:
+            print(f" {i+1}. {cha.name}")
+            i += 1
+        print(" Which character will you choose to use item?")
+        number = input(" Enter number: ")
+        if i == 1:
+            while number != "1":
+                print(" >>System: please choose 1 or 2.")
+                number = input(" Enter number: ")
+        elif i == 2:
+            while number != "1" and number != "2":
+                print(" >>System: please choose 1 or 2.")
+                number = input(" Enter number: ")
+        elif i == 3:
+            while number != "1" and number != "2" and number != "3":
+                print(" >>System: please choose 1 - 3.")
+                number = input(" Enter number: ")
+
+
+        # print('-' * 50)
+        # print(f"{'Which Item':^50}")
+        # print('-' * 50)
+        # i = 1
+        # for item, many in self.party[int(number)].bag.items():
+        #     print(f" {i}. {item} have {many}")
+        #     i += 1
+
 
 
     def claim_reward(self):

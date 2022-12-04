@@ -8,12 +8,12 @@
             "level": 10
         },
         "weapon": {
-            "name": "Banana",
+            "name": "Banana Sword",
             "level": 10,
             "power": 20
         },
         "armor": {
-            "name": "Banana armor",
+            "name": "Banana Armor",
             "level": 10,
             "power": 20
         },
