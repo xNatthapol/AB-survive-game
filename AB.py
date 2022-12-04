@@ -150,6 +150,9 @@ def add_character(username):
             number = input(" Enter number: ")
         if number == "1":
             name = input(" Enter character name: ")
+            while name == "" :
+                print(" >>System: name is not empty.")
+                name = input(" Enter character name: ")
             weapon = {}
             print(" Starter weapon")
             print(" 1. Sword")
@@ -185,8 +188,6 @@ def system_login():
         number = input(" Enter number: ")
         while number != "1" and number != "2":
             print(" >>System: please choose 1 or 2.")
-            # print(" 1. Register")
-            # print(" 2. Login")
             number = input(" Enter number: ")
         if number == "1":
             register()
@@ -312,9 +313,11 @@ class Shop:
         if item_name in self.pyb.item_bag:
             self.pyb.item_bag[item_name] += 1
             self.pyb.money['money'] -= self.item_shop[item_name]
+            print(f" >>System: {item_name} add to your bag!")
         else:
             self.pyb.item_bag[item_name] = 1
             self.pyb.money['money'] -= self.item_shop[item_name]
+            print(f" >>System: {item_name} add to your bag!")
 
     def sell(self, item_name):
         if item_name in self.pyb.item_bag:
@@ -407,26 +410,34 @@ class AB:
                 if ulti_count != 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
-                    if cha.hp['hp'] > 0:
+                    if self.cb.boss_hp['hp'] <= 0:
+                        os.system('python test222.py')
+                        print(" Boss dead!")
+                        break
+                    elif cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                     elif cha.hp['hp'] <= 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                         print(f" {cha.name} dead.")
-                    # os.system('python test222.py')
+                    os.system('python test222.py')
                 elif ulti_count == 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']*10
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
-                    if cha.hp['hp'] > 0:
+                    if self.cb.boss_hp['hp'] <= 0:
+                        os.system('python test333.py')
+                        print(" Boss dead!")
+                        break
+                    elif cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']*10}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                     elif cha.hp['hp'] <= 0:
                         print(f" {cha.name} attack {cha.weapon['power']*10}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                         print(f" {cha.name} dead.")
-                    # os.system('python test333.py')
-            elif cha.hp['hp'] <= 0:
+                    os.system('python test333.py')
+            elif cha != {} and cha.hp['hp'] <= 0:
                 print(f"System: character {cha.name} dead.")
 
 
@@ -443,8 +454,6 @@ class AB:
     def armor_change(self):
         pass
 
-    def __repr__(self):
-        return f"{self.party}, {self.cb}"
 
     # def update_exp(self):
     #     pass
@@ -470,6 +479,9 @@ character_1 = {}
 character_2 = {}
 character_3 = {}
 
+save_hp_1 = {}
+save_hp_2 = {}
+save_hp_3 = {}
 
 print('=' * 50)
 print(f"{'Welcome to AB survive game':^50}")
@@ -481,8 +493,10 @@ with open("player_data.json", "r") as data_file:
     data = json.load(data_file)
 
 data_player = data[username]
+
 if 'character1' in data_player:
     character_data_1 = data_player['character1']
+    save_hp_1['hp'] = character_data_1['hp']['hp']
     character_1 = Character(character_data_1['name'],
                             character_data_1['exp'],
                             character_data_1['hp'],
@@ -491,8 +505,10 @@ if 'character1' in data_player:
                             data_player['money'],
                             data_player['item_bag'])
 
+
 if 'character2' in data_player:
     character_data_2 = data_player['character2']
+    save_hp_2['hp'] = character_data_2['hp']['hp']
     character_2 = Character(character_data_2['name'],
                             character_data_2['exp'],
                             character_data_2['hp'],
@@ -501,8 +517,10 @@ if 'character2' in data_player:
                             data_player['money'],
                             data_player['item_bag'])
 
+
 if 'character3' in data_player:
     character_data_3 = data_player['character3']
+    save_hp_3['hp'] = character_data_3['hp']['hp']
     character_3 = Character(character_data_3['name'],
                             character_data_3['exp'],
                             character_data_3['hp'],
@@ -510,6 +528,7 @@ if 'character3' in data_player:
                             character_data_3['armor'],
                             data_player['money'],
                             data_player['item_bag'])
+
 
 with open("boss_data.json", "r") as data_file:
     data_boss = json.load(data_file)
@@ -603,35 +622,44 @@ while True:
         with open("player_data.json", "r") as data_file:
             data = json.load(data_file)
         data_player = data[username]
-        if 'character1' in data_player:
-            character_data_1 = data_player['character1']
-            character_1 = Character(character_data_1['name'],
-                                    character_data_1['exp'],
-                                    character_data_1['hp'],
-                                    character_data_1['weapon'],
-                                    character_data_1['armor'],
-                                    data_player['money'],
-                                    data_player['item_bag'])
+        print(data_player)
+        print(save_hp_1)
+        print(save_hp_2)
+        print(save_hp_3)
+        if save_hp_1 == {}:
+            if 'character1' in data_player:
+                character_data_1 = data_player['character1']
+                save_hp_1['hp'] = character_data_1['hp']['hp']
+                character_1 = Character(character_data_1['name'],
+                                        character_data_1['exp'],
+                                        character_data_1['hp'],
+                                        character_data_1['weapon'],
+                                        character_data_1['armor'],
+                                        data_player['money'],
+                                        data_player['item_bag'])
+        if save_hp_2 == {}:
+            if 'character2' in data_player:
+                character_data_2 = data_player['character2']
+                save_hp_2['hp'] = character_data_2['hp']['hp']
+                character_2 = Character(character_data_2['name'],
+                                        character_data_2['exp'],
+                                        character_data_2['hp'],
+                                        character_data_2['weapon'],
+                                        character_data_2['armor'],
+                                        data_player['money'],
+                                        data_player['item_bag'])
 
-        if 'character2' in data_player:
-            character_data_2 = data_player['character2']
-            character_2 = Character(character_data_2['name'],
-                                    character_data_2['exp'],
-                                    character_data_1['hp'],
-                                    character_data_2['weapon'],
-                                    character_data_2['armor'],
-                                    data_player['money'],
-                                    data_player['item_bag'])
-
-        if 'character3' in data_player:
-            character_data_3 = data_player['character3']
-            character_3 = Character(character_data_3['name'],
-                                    character_data_3['exp'],
-                                    character_data_1['hp'],
-                                    character_data_3['weapon'],
-                                    character_data_3['armor'],
-                                    data_player['money'],
-                                    data_player['item_bag'])
+        if save_hp_3 == {}:
+            if 'character3' in data_player:
+                character_data_3 = data_player['character3']
+                save_hp_3['hp'] = character_data_3['hp']['hp']
+                character_3 = Character(character_data_3['name'],
+                                        character_data_3['exp'],
+                                        character_data_3['hp'],
+                                        character_data_3['weapon'],
+                                        character_data_3['armor'],
+                                        data_player['money'],
+                                        data_player['item_bag'])
 
         if character_1 != {}:
             print(character_1)
@@ -771,8 +799,14 @@ while True:
         with open("player_data.json", "r") as data_file:
             data = json.load(data_file)
 
+        if character_1 != {}:
+            data_player['character1']['hp']['hp'] = save_hp_1['hp']
+        if character_2 != {}:
+            data_player['character2']['hp']['hp'] = save_hp_2['hp']
+        if character_3 != {}:
+            data_player['character3']['hp']['hp'] = save_hp_3['hp']
+
         data[username].update(data_player)
         with open("player_data.json", "w") as data_file:
             json.dump(data, data_file, indent=4)
         sys.exit()
-
