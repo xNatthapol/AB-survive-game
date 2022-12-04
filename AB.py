@@ -302,12 +302,14 @@ class Shop:
                         self.pyb.weapon['level'] = self.equipment_shop[type_][equipment]['level']
                         self.pyb.weapon['power'] = self.equipment_shop[type_][equipment]['power']
                         self.pyb.money['money'] -= self.equipment_shop[type_][equipment]['price']
+                        print(f" >>System: you get {equipment}!")
                 elif type_ == "Armor":
                     if name == equipment:
                         self.pyb.armor['name'] = equipment
                         self.pyb.armor['level'] = self.equipment_shop[type_][equipment]['level']
                         self.pyb.armor['power'] = self.equipment_shop[type_][equipment]['power']
                         self.pyb.money['money'] -= self.equipment_shop[type_][equipment]['price']
+                        print(f" >>System: you get {equipment}!")
 
     def buy(self, item_name):
         if item_name in self.pyb.item_bag:
@@ -325,6 +327,7 @@ class Shop:
             self.pyb.money['money'] += self.item_shop[item_name]
             if self.pyb.item_bag[item_name] == 0:
                 self.pyb.item_bag.pop(item_name)
+            print(f" >>System: you sold {item_name}.")
         else:
             return None
 
