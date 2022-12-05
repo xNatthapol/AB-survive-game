@@ -405,17 +405,16 @@ class AB:
     def cb(self):
         return self.__cb
 
-    def attack(self, ulti_count):
+    def attack(self, ultimate_count):
         print('-' * 50)
         print(f"{'- Battle -':^50}")
         print('-' * 50)
         for cha in self.party:
             if cha != {} and cha.hp['hp'] > 0:
-                if ulti_count != 3:
+                if ultimate_count != 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
                     if self.cb.boss_hp['hp'] <= 0:
-                        os.system('python test222.py')
                         print(" Boss dead!")
                         break
                     elif cha.hp['hp'] > 0:
@@ -425,12 +424,16 @@ class AB:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                         print(f" {cha.name} dead.")
-                    os.system('python test222.py')
-                elif ulti_count == 3:
+                elif ultimate_count == 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']*10
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
                     if self.cb.boss_hp['hp'] <= 0:
-                        os.system('python test333.py')
+                        if "Sword" in cha.weapon['name']:
+                            os.system('python ultimate_sword.py')
+                        elif "Bow" in cha.weapon['name']:
+                            os.system('python ultimate_bow.py')
+                        elif "Hammer" in cha.weapon['name']:
+                            os.system('python ultimate_hammer.py')
                         print(" Boss dead!")
                         break
                     elif cha.hp['hp'] > 0:
@@ -440,7 +443,12 @@ class AB:
                         print(f" {cha.name} attack {cha.weapon['power']*10}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                         print(f" {cha.name} dead.")
-                    os.system('python test333.py')
+                    if "Sword" in cha.weapon['name']:
+                        os.system('python ultimate_sword.py')
+                    elif "Bow" in cha.weapon['name']:
+                        os.system('python ultimate_bow.py')
+                    elif "Hammer" in cha.weapon['name']:
+                        os.system('python ultimate_hammer.py')
             elif cha != {} and cha.hp['hp'] <= 0:
                 print(f"System: character {cha.name} dead.")
 
@@ -571,7 +579,7 @@ list_boss = []
 for name_boss in data_boss:
     list_boss.append(name_boss)
 
-ulti_count = 0
+ultimate_count = 0
 
 while True:
     print('=' * 50)
@@ -631,11 +639,11 @@ while True:
                 print(" >>System: please choose number 1 - 4.")
                 number = input(" Enter number: ")
             if number == "1":
-                ab.attack(ulti_count)
-                if ulti_count < 3:
-                    ulti_count += 1
-                elif ulti_count == 3:
-                    ulti_count -= 3
+                ab.attack(ultimate_count)
+                if ultimate_count < 3:
+                    ultimate_count += 1
+                elif ultimate_count == 3:
+                    ultimate_count -= 3
             elif number == "2":
                 pass
             elif number == "3":
