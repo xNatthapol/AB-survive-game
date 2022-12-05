@@ -178,7 +178,7 @@ def add_character(username):
             with open("player_data.json", "w") as data_file:
                 json.dump(data, data_file, indent=4)
     else:
-        print("No more available slots.")
+        print(" >>System: No more available slots.")
 
 
 def system_login():
@@ -323,7 +323,7 @@ class Shop:
 
     def sell(self, item_name):
         if item_name in self.pyb.item_bag:
-            if self.pyb.item_bag[item_name] > 0:
+            if self.pyb.item_bag[item_name] >= 0:
                 self.pyb.item_bag.pop(item_name)
             else:
                 self.pyb.item_bag[item_name] -= 1
@@ -405,6 +405,7 @@ class AB:
     def cb(self):
         return self.__cb
 
+
     def attack(self, ultimate_count):
         print('-' * 50)
         print(f"{'- Battle -':^50}")
@@ -413,77 +414,90 @@ class AB:
             if cha != {} and cha.hp['hp'] > 0:
                 if ultimate_count != 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']
-                    cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
+                    if "use_magic_block" in cha.item_bag:
+                        print(f" {cha.name} blocks the boss attack.")
+                    if ("use_magic_block" not in cha.item_bag) and ("use_shield" not in cha.item_bag):
+                        cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
+                    if "use_shield" in cha.item_bag:
+                        print(f" {cha.name} blocks the boss attack.")
+                        self.party[0].item_bag['use_shield'] -= 1
+                        if self.party[0].item_bag['use_shield'] <= 0:
+                            self.party[0].item_bag.pop('use_shield')
                     if self.cb.boss_hp['hp'] <= 0:
                         print(" Boss dead!")
+                        self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
                         break
                     elif cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                     elif cha.hp['hp'] <= 0:
-                        print(f" {cha.name} attack {cha.weapon['power']}!")
-                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
                         print(f" {cha.name} dead.")
+                        cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
                 elif ultimate_count == 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']*10
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
                     if self.cb.boss_hp['hp'] <= 0:
+                        print(" Boss dead!")
+                        self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
+                        break
+                    elif cha.hp['hp'] > 0:
+                        print(f" {cha.name} attack {cha.weapon['power']*10}!")
                         if "Sword" in cha.weapon['name']:
                             os.system('python ultimate_sword.py')
                         elif "Bow" in cha.weapon['name']:
                             os.system('python ultimate_bow.py')
                         elif "Hammer" in cha.weapon['name']:
                             os.system('python ultimate_hammer.py')
-                        print(" Boss dead!")
-                        break
-                    elif cha.hp['hp'] > 0:
-                        print(f" {cha.name} attack {cha.weapon['power']*10}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                     elif cha.hp['hp'] <= 0:
-                        print(f" {cha.name} attack {cha.weapon['power']*10}!")
-                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
                         print(f" {cha.name} dead.")
-                    if "Sword" in cha.weapon['name']:
-                        os.system('python ultimate_sword.py')
-                    elif "Bow" in cha.weapon['name']:
-                        os.system('python ultimate_bow.py')
-                    elif "Hammer" in cha.weapon['name']:
-                        os.system('python ultimate_hammer.py')
+                        cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
             elif cha != {} and cha.hp['hp'] <= 0:
                 print(f"System: character {cha.name} dead.")
+        if "use_magic_block" in self.party[0].item_bag:
+            self.party[0].item_bag['use_magic_block'] -= 1
+            if self.party[0].item_bag['use_magic_block'] <= 0:
+                self.party[0].item_bag.pop('use_magic_block')
 
-
-    def use_item(self, item_name):
+    def use_item(self, character, item_name, save_hp):
         print('-' * 50)
-        print(f"{'- Use Item -':^50}")
+        print(f"{'Use Item':^50}")
         print('-' * 50)
-        i = 0
-        for cha in self.party:
-            print(f" {i+1}. {cha.name}")
-            i += 1
-        print(" Which character will you choose to use item?")
-        number = input(" Enter number: ")
-        if i == 1:
-            while number != "1":
-                print(" >>System: please choose 1 or 2.")
-                number = input(" Enter number: ")
-        elif i == 2:
-            while number != "1" and number != "2":
-                print(" >>System: please choose 1 or 2.")
-                number = input(" Enter number: ")
-        elif i == 3:
-            while number != "1" and number != "2" and number != "3":
-                print(" >>System: please choose 1 - 3.")
-                number = input(" Enter number: ")
-
-
-        # print('-' * 50)
-        # print(f"{'Which Item':^50}")
-        # print('-' * 50)
-        # i = 1
-        # for item, many in self.party[int(number)].bag.items():
-        #     print(f" {i}. {item} have {many}")
-        #     i += 1
+        if item_name == "potion":
+            character.item_bag['potion'] -= 1
+            character.hp['hp'] += 20
+            if character.item_bag['potion'] <= 0:
+                character.item_bag.pop('potion')
+        elif item_name == "revive card":
+            if character.hp['hp'] <= 0:
+                character.item_bag['revive card'] -= 1
+                character.hp['hp'] += save_hp
+                if character.item_bag['revive card'] <= 0:
+                    character.item_bag.pop('revive card')
+            else:
+                print(f" >>System: {character.name} is still alive!")
+        elif item_name == "magic block":
+            if "use_magic_block" in character.item_bag:
+                character.item_bag['use_magic_block'] += 1
+                character.item_bag['magic block'] -= 1
+                if character.item_bag['magic block'] <= 0:
+                    character.item_bag.pop('magic block')
+            if "use_magic_block" not in character.item_bag:
+                character.item_bag['use_magic_block'] = 1
+                character.item_bag['magic block'] -= 1
+                if character.item_bag['magic block'] <= 0:
+                    character.item_bag.pop('magic block')
+        elif item_name == "shield":
+            if "use_shield" in character.item_bag:
+                character.item_bag['use_shield'] += 1
+                character.item_bag['shield'] -= 1
+                if character.item_bag['shield'] <= 0:
+                    character.item_bag.pop('shield')
+            if "use_shield" not in character.item_bag:
+                character.item_bag['use_shield'] = 1
+                character.item_bag['shield'] -= 1
+                if character.item_bag['shield'] <= 0:
+                    character.item_bag.pop('shield')
 
 
 
@@ -645,7 +659,55 @@ while True:
                 elif ultimate_count == 3:
                     ultimate_count -= 3
             elif number == "2":
-                pass
+                print('-' * 50)
+                print(f"{'Select Item':^50}")
+                print('-' * 50)
+                list_item = []
+                i = 0
+                for item, many in character_1.item_bag.items():
+                    if "use" not in item:
+                        print(f" {i+1}. {item} have {many}.")
+                        list_item.append(item)
+                        i += 1
+                print(" Which item you want to use?")
+                number_ = input(" Enter number: ")
+                if i == 1:
+                    while number_ != "1":
+                        print(" >>System: please choose 1 or 2.")
+                        number_ = input(" Enter number: ")
+                elif i == 2:
+                    while number_ != "1" and number != "2":
+                        print(" >>System: please choose 1 or 2.")
+                        number_ = input(" Enter number: ")
+                elif i == 3:
+                    while number_ != "1" and number != "2" and number != "3":
+                        print(" >>System: please choose 1 - 3.")
+                        number_ = input(" Enter number: ")
+                i = 0
+                for cha in ab.party:
+                    print(f" {i + 1}. {cha.name}")
+                    i += 1
+                print(" Which character will you choose to use item?")
+                number = input(" Enter number: ")
+                if i == 1:
+                    while number != "1":
+                        print(" >>System: please choose 1 or 2.")
+                        number = input(" Enter number: ")
+                elif i == 2:
+                    while number != "1" and number != "2":
+                        print(" >>System: please choose 1 or 2.")
+                        number = input(" Enter number: ")
+                elif i == 3:
+                    while number != "1" and number != "2" and number != "3":
+                        print(" >>System: please choose 1 - 3.")
+                        number = input(" Enter number: ")
+                if number == "1":
+                    ab.use_item(ab.party[int(number)-1], list_item[int(number_)-1], save_hp_1)
+                elif number == "2":
+                    ab.use_item(ab.party[int(number)-1], list_item[int(number_)-1], save_hp_2)
+                elif number == "3":
+                    ab.use_item(ab.party[int(number)-1], list_item[int(number_)-1], save_hp_3)
+
             elif number == "3":
                 print(boss_choose)
             elif number == "4":
@@ -664,10 +726,6 @@ while True:
         with open("player_data.json", "r") as data_file:
             data = json.load(data_file)
         data_player = data[username]
-        print(data_player)
-        print(save_hp_1)
-        print(save_hp_2)
-        print(save_hp_3)
         if save_hp_1 == {}:
             if 'character1' in data_player:
                 character_data_1 = data_player['character1']
@@ -756,6 +814,8 @@ while True:
                     shop.buy("magic block")
                 elif number == "3":
                     shop.buy("shield")
+                elif number == "4":
+                    shop.buy("revive card")
             elif choice == "s":
                 print('-' * 50)
                 print(f"{'Sell Item':^50}")
@@ -769,6 +829,8 @@ while True:
                     shop.sell("magic block")
                 elif number == "3":
                     shop.sell("shield")
+                elif number == "4":
+                    shop.buy("revive card")
         elif number == "2":
             print('-' * 50)
             print(f"{'Select Character':^50}")
@@ -820,7 +882,7 @@ while True:
             elif number == "w2":
                 shop_.buy_equipment("Silver Bow")
             elif number == "w3":
-                shop_.buy_equipment("Silver Hummer")
+                shop_.buy_equipment("Silver Hammer")
             elif number == "a1":
                 shop_.buy_equipment("Silver Armor")
             elif number == "a2":

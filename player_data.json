@@ -2,10 +2,13 @@
     "g": {
         "password": "g",
         "item_bag": {
-            "potion": 5
+            "potion": 5,
+            "magic block": 1,
+            "shield": 1,
+            "revive card": 1
         },
         "money": {
-            "money": 200
+            "money": 900
         },
         "character1": {
             "name": "Garo",
@@ -17,6 +20,44 @@
             },
             "weapon": {
                 "name": "Wood Sword",
+                "level": 1,
+                "power": 10
+            },
+            "armor": {
+                "name": "Wood Armor",
+                "level": 1,
+                "power": 10
+            }
+        },
+        "character2": {
+            "name": "Gigi",
+            "exp": {
+                "exp": 1000
+            },
+            "hp": {
+                "hp": 100
+            },
+            "weapon": {
+                "name": "Wood Bow",
+                "level": 1,
+                "power": 10
+            },
+            "armor": {
+                "name": "Wood Armor",
+                "level": 1,
+                "power": 10
+            }
+        },
+        "character3": {
+            "name": "Faajjj",
+            "exp": {
+                "exp": 1000
+            },
+            "hp": {
+                "hp": 100
+            },
+            "weapon": {
+                "name": "Wood Hammer",
                 "level": 1,
                 "power": 10
             },
