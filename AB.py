@@ -406,7 +406,7 @@ class AB:
         return self.__cb
 
 
-    def attack(self, ultimate_count):
+    def attack(self, ultimate_count, reward_count):
         print('-' * 50)
         print(f"{'- Battle -':^50}")
         print('-' * 50)
@@ -424,8 +424,11 @@ class AB:
                         if self.party[0].item_bag['use_shield'] <= 0:
                             self.party[0].item_bag.pop('use_shield')
                     if self.cb.boss_hp['hp'] <= 0:
-                        print(" - Boss dead! -")
                         self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
+                        print(" - Boss dead! -")
+                        if reward_count == 0:
+                            self.claim_reward()
+                            reward_count += 1
                         break
                     elif cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
@@ -454,8 +457,6 @@ class AB:
                     elif cha.hp['hp'] <= 0:
                         print(f" {cha.name} dead.")
                         cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
-            # elif cha != {} and cha.hp['hp'] <= 0:
-            #     print(f" System: character {cha.name} dead.")
         if "use_magic_block" in self.party[0].item_bag:
             self.party[0].item_bag['use_magic_block'] -= 1
             if self.party[0].item_bag['use_magic_block'] <= 0:
@@ -507,12 +508,73 @@ class AB:
 
 
     def claim_reward(self):
+        for cha in self.party:
+            cha.exp['exp'] += self.cb.boss_exp_earn['exp']
+            print(f" >>System: {cha.name} get {self.cb.boss_exp_earn['exp']}")
+        self.party[0].item_bag[f"{self.cb.boss_item_drop['name']}"] = self.cb.boss_item_drop['many']
+        self.party[0].money['money'] += self.cb.boss_money['money']
+        print(f" >>System: {self.cb.boss_item_drop['name']} {self.cb.boss_item_drop['many']} add to your bag!")
+        print(f" >>System: You get {self.cb.boss_money['money']}-c !")
+        print(f" >>System: You get {self.cb.boss_weapon['name']}[lv.{self.cb.boss_weapon['level']}][ATK:{self.cb.boss_weapon['power']}]!")
+        print(f" >>System: You get {self.cb.boss_armor_drop['name']}[lv.{self.cb.boss_armor_drop['level']}][DEF:{self.cb.boss_armor_drop['power']}]!")
+        i = 0
+        for cha in self.party:
+            print(f" {i + 1}. {cha.name}")
+            i += 1
+        print(f" Which character will you choose to wear {self.cb.boss_weapon['name']}?")
+        number = input(" Enter number: ")
+        if i == 1:
+            while number != "1":
+                print(" >>System: please choose 1 or 2.")
+                number = input(" Enter number: ")
+        elif i == 2:
+            while number != "1" and number != "2":
+                print(" >>System: please choose 1 or 2.")
+                number = input(" Enter number: ")
+        elif i == 3:
+            while number != "1" and number != "2" and number != "3":
+                print(" >>System: please choose 1 - 3.")
+                number = input(" Enter number: ")
+
+        if number == "1":
+            self.weapon_change(0)
+        elif number == "2":
+            self.weapon_change(1)
+        elif number == "3":
+            self.weapon_change(2)
+
+        n = 0
+        for cha in self.party:
+            print(f" {n + 1}. {cha.name}")
+            n += 1
+        print(
+            f" Which character will you choose to wear {self.cb.boss_armor_drop['name']}?")
+        numbers = input(" Enter number: ")
+        if n == 1:
+            while numbers != "1":
+                print(" >>System: please choose 1 or 2.")
+                numbers = input(" Enter number: ")
+        elif n == 2:
+            while numbers != "1" and numbers != "2":
+                print(" >>System: please choose 1 or 2.")
+                numbers = input(" Enter number: ")
+        elif n == 3:
+            while numbers != "1" and numbers != "2" and numbers != "3":
+                print(" >>System: please choose 1 - 3.")
+                numbers = input(" Enter number: ")
+
+        if numbers == "1":
+            self.armor_change(0)
+        elif numbers == "2":
+            self.armor_change(1)
+        elif numbers == "3":
+            self.armor_change(2)
+
+
+    def weapon_change(self, cha_index):
         pass
 
-    def weapon_change(self):
-        pass
-
-    def armor_change(self):
+    def armor_change(self, cha_index):
         pass
 
 
