@@ -424,14 +424,16 @@ class AB:
                         if self.party[0].item_bag['use_shield'] <= 0:
                             self.party[0].item_bag.pop('use_shield')
                     if self.cb.boss_hp['hp'] <= 0:
-                        print(" Boss dead!")
+                        print(" - Boss dead! -")
                         self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
                         break
                     elif cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                     elif cha.hp['hp'] <= 0:
-                        print(f" {cha.name} dead.")
+                        print(f" {cha.name} attack {cha.weapon['power']}!")
+                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                        print(f" >>System: {cha.name} dead.")
                         cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
                 elif ultimate_count == 3:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']*10
@@ -452,8 +454,8 @@ class AB:
                     elif cha.hp['hp'] <= 0:
                         print(f" {cha.name} dead.")
                         cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
-            elif cha != {} and cha.hp['hp'] <= 0:
-                print(f"System: character {cha.name} dead.")
+            # elif cha != {} and cha.hp['hp'] <= 0:
+            #     print(f" System: character {cha.name} dead.")
         if "use_magic_block" in self.party[0].item_bag:
             self.party[0].item_bag['use_magic_block'] -= 1
             if self.party[0].item_bag['use_magic_block'] <= 0:
@@ -468,12 +470,15 @@ class AB:
             character.hp['hp'] += 20
             if character.item_bag['potion'] <= 0:
                 character.item_bag.pop('potion')
+            print(f" >>System: {character.name} use potion.")
+            print(f" >>System: {character.name} hp: {character.hp['hp']}")
         elif item_name == "revive card":
             if character.hp['hp'] <= 0:
                 character.item_bag['revive card'] -= 1
-                character.hp['hp'] += save_hp
+                character.hp['hp'] += save_hp['hp']
                 if character.item_bag['revive card'] <= 0:
                     character.item_bag.pop('revive card')
+                print(f" >>System: {character.name} has been revived!")
             else:
                 print(f" >>System: {character.name} is still alive!")
         elif item_name == "magic block":
