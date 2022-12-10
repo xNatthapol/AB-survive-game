@@ -874,6 +874,7 @@ while True:
         shop = Shop(data_shop_item, data_shop_equipment, character_1)
         shop_2 = Shop(data_shop_item, data_shop_equipment, character_2)
         shop_3 = Shop(data_shop_item, data_shop_equipment, character_3)
+        shop_ = shop
 
         if number == "1":
             print('-' * 50)
@@ -957,7 +958,7 @@ while True:
             print(f"{'Equipment Shop':^50}")
             print('-' * 50)
             shop_.show_equipment_shop()
-            print(" Which one you want to buy?")
+            print(" Which one you want to buy? Weapon(w) or Armor(a)")
             print(" - Ex. If you want Silver Sword enter w1")
             print("   = w from Weapon and 1 from first weapon")
             number = input(" If you dont want press enter: ")
