@@ -414,7 +414,23 @@ class AB:
         for cha in self.party:
             if cha != {} and cha.hp['hp'] > 0:
                 if ultimate_count != 3:
-                    self.cb.boss_hp['hp'] -= cha.weapon['power']
+                    if self.cb.boss_hp['hp'] <= 0:
+                        self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
+                        print(" - Boss dead! -")
+                        if reward_count == 0:
+                            self.claim_reward()
+                            reward_count += 1
+                        break
+                    else:
+                        self.cb.boss_hp['hp'] -= cha.weapon['power']
+                        if self.cb.boss_hp['hp'] <= 0:
+                            self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
+                            print(f" {cha.name} attack {cha.weapon['power']}!")
+                            print(" - Boss dead! -")
+                            if reward_count == 0:
+                                self.claim_reward()
+                                reward_count += 1
+                            break
                     if "use_magic_block" in cha.item_bag:
                         print(f" {cha.name} blocks the boss attack.")
                     if ("use_magic_block" not in cha.item_bag) and ("use_shield" not in cha.item_bag):
@@ -424,15 +440,7 @@ class AB:
                         self.party[0].item_bag['use_shield'] -= 1
                         if self.party[0].item_bag['use_shield'] <= 0:
                             self.party[0].item_bag.pop('use_shield')
-                    if self.cb.boss_hp['hp'] <= 0:
-                        self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
-                        print(f" {cha.name} attack {cha.weapon['power']}!")
-                        print(" - Boss dead! -")
-                        if reward_count == 0:
-                            self.claim_reward()
-                            reward_count += 1
-                        break
-                    elif cha.hp['hp'] > 0:
+                    if cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                     elif cha.hp['hp'] <= 0:
@@ -441,27 +449,57 @@ class AB:
                         print(f" >>System: {cha.name} dead.")
                         cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
                 elif ultimate_count == 3:
-                    self.cb.boss_hp['hp'] -= cha.weapon['power']*10
-                    cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
                     if self.cb.boss_hp['hp'] <= 0:
                         self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
-                        print(f" {cha.name} attack {cha.weapon['power'] * 10}!")
-                        print(" Boss dead!")
+                        print(" - Boss dead! -")
                         if reward_count == 0:
                             self.claim_reward()
                             reward_count += 1
                         break
-                    elif cha.hp['hp'] > 0:
-                        print(f" {cha.name} attack {cha.weapon['power']*10}!")
+                    else:
+                        self.cb.boss_hp['hp'] -= (cha.weapon['power']*10)
+                        if self.cb.boss_hp['hp'] <= 0:
+                            self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
+                            if "Sword" in cha.weapon['name']:
+                                os.system('python ultimate_sword.py')
+                            elif "Bow" in cha.weapon['name']:
+                                os.system('python ultimate_bow.py')
+                            elif "Hammer" in cha.weapon['name']:
+                                os.system('python ultimate_hammer.py')
+                            print(f" {cha.name} attack {cha.weapon['power']*10}!")
+                            print(" - Boss dead! -")
+                            if reward_count == 0:
+                                self.claim_reward()
+                                reward_count += 1
+                            break
+                    if "use_magic_block" in cha.item_bag:
+                        print(f" {cha.name} blocks the boss attack.")
+                    if ("use_magic_block" not in cha.item_bag) and ("use_shield" not in cha.item_bag):
+                        cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
+                    if "use_shield" in cha.item_bag:
+                        print(f" {cha.name} blocks the boss attack.")
+                        self.party[0].item_bag['use_shield'] -= 1
+                        if self.party[0].item_bag['use_shield'] <= 0:
+                            self.party[0].item_bag.pop('use_shield')
+                    if cha.hp['hp'] > 0:
                         if "Sword" in cha.weapon['name']:
                             os.system('python ultimate_sword.py')
                         elif "Bow" in cha.weapon['name']:
                             os.system('python ultimate_bow.py')
                         elif "Hammer" in cha.weapon['name']:
                             os.system('python ultimate_hammer.py')
+                        print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                     elif cha.hp['hp'] <= 0:
-                        print(f" {cha.name} dead.")
+                        if "Sword" in cha.weapon['name']:
+                            os.system('python ultimate_sword.py')
+                        elif "Bow" in cha.weapon['name']:
+                            os.system('python ultimate_bow.py')
+                        elif "Hammer" in cha.weapon['name']:
+                            os.system('python ultimate_hammer.py')
+                        print(f" {cha.name} attack {cha.weapon['power']}!")
+                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                        print(f" >>System: {cha.name} dead.")
                         cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
         if "use_magic_block" in self.party[0].item_bag:
             self.party[0].item_bag['use_magic_block'] -= 1
