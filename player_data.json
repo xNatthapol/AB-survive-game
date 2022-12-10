@@ -2,16 +2,13 @@
     "g": {
         "password": "g",
         "item_bag": {
-            "potion": 5,
-            "magic block": 1,
-            "shield": 1,
-            "revive card": 1
+            "potion": 5
         },
         "money": {
-            "money": 900
+            "money": 1000
         },
         "character1": {
-            "name": "Garo",
+            "name": "Meg",
             "exp": {
                 "exp": 1000
             },
@@ -30,7 +27,7 @@
             }
         },
         "character2": {
-            "name": "Gigi",
+            "name": "Gara",
             "exp": {
                 "exp": 1000
             },
@@ -49,7 +46,7 @@
             }
         },
         "character3": {
-            "name": "Faajjj",
+            "name": "Janas",
             "exp": {
                 "exp": 1000
             },

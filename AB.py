@@ -395,7 +395,13 @@ class Boss:
 
 class AB:
     def __init__(self, cha1, cha2, cha3, cb):
-        self.__party = [cha1, cha2, cha3]
+        self.__party = []
+        if cha1 != {}:
+            self.__party.append(cha1)
+        if cha2 != {}:
+            self.__party.append(cha2)
+        if cha3 != {}:
+            self.__party.append(cha3)
         self.__cb = cb
 
     @property
@@ -407,7 +413,7 @@ class AB:
         return self.__cb
 
 
-    def attack(self, ultimate_count, reward_count):
+    def attack(self, ultimate_count, reward_count, save_hp_1, save_hp_2, save_hp_3, save_hp_boss):
         print('-' * 50)
         print(f"{'- Battle -':^50}")
         print('-' * 50)
@@ -418,7 +424,15 @@ class AB:
                         self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
                         print(" - Boss dead! -")
                         if reward_count == 0:
-                            self.claim_reward()
+                            for cha in self.party:
+                                if cha != {}:
+                                    if self.party.index(cha) == 0 and save_hp_1 != {}:
+                                        cha.hp['hp'] = save_hp_1['hp']
+                                    elif self.party.index(cha) == 1 and save_hp_2 != {}:
+                                        cha.hp['hp'] = save_hp_2['hp']
+                                    elif self.party.index(cha) == 2 and save_hp_3 != {}:
+                                        cha.hp['hp'] = save_hp_3['hp']
+                            self.claim_reward(save_hp_boss)
                             reward_count += 1
                         break
                     else:
@@ -428,7 +442,15 @@ class AB:
                             print(f" {cha.name} attack {cha.weapon['power']}!")
                             print(" - Boss dead! -")
                             if reward_count == 0:
-                                self.claim_reward()
+                                for cha in self.party:
+                                    if cha != {}:
+                                        if self.party.index(cha) == 0 and save_hp_1 != {}:
+                                            cha.hp['hp'] = save_hp_1['hp']
+                                        elif self.party.index(cha) == 1 and save_hp_2 != {}:
+                                            cha.hp['hp'] = save_hp_2['hp']
+                                        elif self.party.index(cha) == 2 and save_hp_3 != {}:
+                                            cha.hp['hp'] = save_hp_3['hp']
+                                self.claim_reward(save_hp_boss)
                                 reward_count += 1
                             break
                     if cha.hp['hp'] > 0:
@@ -438,22 +460,30 @@ class AB:
                         print(f" >>System: {cha.name} blocks the boss attack.")
                     if ("use_magic_block" not in cha.item_bag) and ("use_shield"+f"_{str(self.party.index(cha))}" not in cha.item_bag):
                         cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
+                        if cha.hp['hp'] <= 0:
+                            print(f" >>System: {cha.name} dead.")
+                            cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
+                        else:
+                            print(f" {cha.name} hp: {cha.hp['hp']}")
                     if "use_shield"+f"_{str(self.party.index(cha))}" in cha.item_bag:
                         print(f" >>System: {cha.name} blocks the boss attack.")
                         self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] -= 1
                         if self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] <= 0:
                             self.party[0].item_bag.pop("use_shield"+f"_{str(self.party.index(cha))}")
-                    if cha.hp['hp'] <= 0:
-                        print(f" {cha.name} attack {cha.weapon['power']}!")
-                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
-                        print(f" >>System: {cha.name} dead.")
-                        cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
                 elif ultimate_count == 3:
                     if self.cb.boss_hp['hp'] <= 0:
                         self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
                         print(" - Boss dead! -")
                         if reward_count == 0:
-                            self.claim_reward()
+                            for cha in self.party:
+                                if cha != {}:
+                                    if self.party.index(cha) == 0 and save_hp_1 != {}:
+                                        cha.hp['hp'] = save_hp_1['hp']
+                                    elif self.party.index(cha) == 1 and save_hp_2 != {}:
+                                        cha.hp['hp'] = save_hp_2['hp']
+                                    elif self.party.index(cha) == 2 and save_hp_3 != {}:
+                                        cha.hp['hp'] = save_hp_3['hp']
+                            self.claim_reward(save_hp_boss)
                             reward_count += 1
                         break
                     else:
@@ -469,7 +499,15 @@ class AB:
                             print(f" {cha.name} attack {cha.weapon['power']*10}!")
                             print(" - Boss dead! -")
                             if reward_count == 0:
-                                self.claim_reward()
+                                for cha in self.party:
+                                    if cha != {}:
+                                        if self.party.index(cha) == 0 and save_hp_1 != {}:
+                                            cha.hp['hp'] = save_hp_1['hp']
+                                        elif self.party.index(cha) == 1 and save_hp_2 != {}:
+                                            cha.hp['hp'] = save_hp_2['hp']
+                                        elif self.party.index(cha) == 2 and save_hp_3 != {}:
+                                            cha.hp['hp'] = save_hp_3['hp']
+                                self.claim_reward(save_hp_boss)
                                 reward_count += 1
                             break
                     if cha.hp['hp'] > 0:
@@ -485,22 +523,16 @@ class AB:
                         print(f" >>System: {cha.name} blocks the boss attack.")
                     if ("use_magic_block" not in cha.item_bag) and ("use_shield"+f"_{str(self.party.index(cha))}" not in cha.item_bag):
                         cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
+                        if cha.hp['hp'] <= 0:
+                            print(f" >>System: {cha.name} dead.")
+                            cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
+                        else:
+                            print(f" {cha.name} hp: {cha.hp['hp']}")
                     if "use_shield"+f"_{str(self.party.index(cha))}" in cha.item_bag:
                         print(f" >>System: {cha.name} blocks the boss attack.")
                         self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] -= 1
                         if self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] <= 0:
                             self.party[0].item_bag.pop("use_shield"+f"_{str(self.party.index(cha))}")
-                    elif cha.hp['hp'] <= 0:
-                        if "Sword" in cha.weapon['name']:
-                            os.system('python ultimate_sword.py')
-                        elif "Bow" in cha.weapon['name']:
-                            os.system('python ultimate_bow.py')
-                        elif "Hammer" in cha.weapon['name']:
-                            os.system('python ultimate_hammer.py')
-                        print(f" {cha.name} attack {cha.weapon['power']}!")
-                        print(f" Boss hp: {self.cb.boss_hp['hp']}")
-                        print(f" >>System: {cha.name} dead.")
-                        cha.hp['hp'] = cha.hp['hp'] - cha.hp['hp']
         if "use_magic_block" in self.party[0].item_bag:
             self.party[0].item_bag['use_magic_block'] -= 1
             if self.party[0].item_bag['use_magic_block'] <= 0:
@@ -511,13 +543,15 @@ class AB:
         print(f"{'Use Item':^50}")
         print('-' * 50)
         if item_name == "potion":
-            if character.hp['hp'] == save_hp:
+            if character.hp['hp'] == save_hp['hp']:
                 print(" System: your hp is full!")
-            else:
+            elif character.hp['hp'] <= 0:
+                print(f" System: {character.name} dead!")
+            elif character.hp['hp'] > 0:
                 character.item_bag['potion'] -= 1
                 character.hp['hp'] += 20
-                if character.hp['hp'] > save_hp:
-                    character.hp['hp'] = save_hp
+                if character.hp['hp'] > save_hp['hp']:
+                    character.hp['hp'] = save_hp['hp']
                 if character.item_bag['potion'] <= 0:
                     character.item_bag.pop('potion')
                 print(f" >>System: {character.name} use potion.")
@@ -564,10 +598,12 @@ class AB:
             print(f" >>System: {character.name} use shield!")
 
 
-    def claim_reward(self):
+    def claim_reward(self, save_hp_boss):
         for cha in self.party:
             cha.exp['exp'] = cha.exp['exp'] + self.cb.boss_exp_earn['exp']
+            cha.hp['hp'] = cha.hp['hp'] + save_hp_boss['hp']
             print(f" >>System: {cha.name} get {self.cb.boss_exp_earn['exp']}exp!")
+            print(f" >>System: {cha.name} hp+{save_hp_boss['hp']}!")
         self.party[0].item_bag[f"{self.cb.boss_item_drop['name']}"] = self.cb.boss_item_drop['many']
         self.party[0].money['money'] += self.cb.boss_money['money']
         print(f" >>System: {self.cb.boss_item_drop['name']} {self.cb.boss_item_drop['many']} add to your bag!")
@@ -653,6 +689,8 @@ character_3 = {}
 save_hp_1 = {}
 save_hp_2 = {}
 save_hp_3 = {}
+
+save_hp_boss = {}
 
 print('=' * 50)
 print(f"{'Welcome to AB survive game':^50}")
@@ -745,7 +783,7 @@ while True:
             number = input(" Enter number: ")
         boss_ = list_boss[int(number)-1]
         boss_choose_data = data_boss[boss_]
-
+        save_hp_boss['hp'] = boss_choose_data['hp']['hp']
         boss_choose = Boss(boss_choose_data['name'],
                            boss_choose_data['hp'],
                            boss_choose_data['level'],
@@ -769,7 +807,7 @@ while True:
                 print(" >>System: please choose number 1 - 4.")
                 number = input(" Enter number: ")
             if number == "1":
-                ab.attack(ultimate_count, reward_count)
+                ab.attack(ultimate_count, reward_count, save_hp_1, save_hp_2, save_hp_3, save_hp_boss)
                 if ab.cb.boss_hp['hp'] <= 0:
                     reward_count += 1
                 if ultimate_count < 3:
@@ -1042,11 +1080,11 @@ while True:
         with open("player_data.json", "r") as data_file:
             data = json.load(data_file)
 
-        if character_1 != {}:
+        if character_1 != {} and (data_player['character1']['hp']['hp'] < save_hp_1['hp']):
             data_player['character1']['hp']['hp'] = save_hp_1['hp']
-        if character_2 != {}:
+        if character_2 != {} and (data_player['character2']['hp']['hp'] < save_hp_2['hp']):
             data_player['character2']['hp']['hp'] = save_hp_2['hp']
-        if character_3 != {}:
+        if character_3 != {} and (data_player['character3']['hp']['hp'] < save_hp_3['hp']):
             data_player['character3']['hp']['hp'] = save_hp_3['hp']
 
         data[username].update(data_player)
