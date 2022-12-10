@@ -214,6 +214,7 @@ class Character:
     def hp(self):
         return self.__hp
 
+    @property
     def exp(self):
         return self.__exp
 
@@ -425,6 +426,7 @@ class AB:
                             self.party[0].item_bag.pop('use_shield')
                     if self.cb.boss_hp['hp'] <= 0:
                         self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
+                        print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(" - Boss dead! -")
                         if reward_count == 0:
                             self.claim_reward()
@@ -442,8 +444,12 @@ class AB:
                     self.cb.boss_hp['hp'] -= cha.weapon['power']*10
                     cha.hp['hp'] -= (self.cb.boss_weapon['power']-cha.armor['power'])
                     if self.cb.boss_hp['hp'] <= 0:
-                        print(" Boss dead!")
                         self.cb.boss_hp['hp'] = self.cb.boss_hp['hp'] - self.cb.boss_hp['hp']
+                        print(f" {cha.name} attack {cha.weapon['power'] * 10}!")
+                        print(" Boss dead!")
+                        if reward_count == 0:
+                            self.claim_reward()
+                            reward_count += 1
                         break
                     elif cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']*10}!")
@@ -472,6 +478,13 @@ class AB:
             if character.item_bag['potion'] <= 0:
                 character.item_bag.pop('potion')
             print(f" >>System: {character.name} use potion.")
+            print(f" >>System: {character.name} hp: {character.hp['hp']}")
+        elif item_name == "banana":
+            character.item_bag['banana'] -= 1
+            character.hp['hp'] += 40
+            if character.item_bag['banana'] <= 0:
+                character.item_bag.pop('banana')
+            print(f" >>System: {character.name} eat banana.")
             print(f" >>System: {character.name} hp: {character.hp['hp']}")
         elif item_name == "revive card":
             if character.hp['hp'] <= 0:
@@ -506,15 +519,14 @@ class AB:
                     character.item_bag.pop('shield')
 
 
-
     def claim_reward(self):
         for cha in self.party:
-            cha.exp['exp'] += self.cb.boss_exp_earn['exp']
-            print(f" >>System: {cha.name} get {self.cb.boss_exp_earn['exp']}")
+            cha.exp['exp'] = cha.exp['exp'] + self.cb.boss_exp_earn['exp']
+            print(f" >>System: {cha.name} get {self.cb.boss_exp_earn['exp']}exp!")
         self.party[0].item_bag[f"{self.cb.boss_item_drop['name']}"] = self.cb.boss_item_drop['many']
         self.party[0].money['money'] += self.cb.boss_money['money']
         print(f" >>System: {self.cb.boss_item_drop['name']} {self.cb.boss_item_drop['many']} add to your bag!")
-        print(f" >>System: You get {self.cb.boss_money['money']}-c !")
+        print(f" >>System: You get {self.cb.boss_money['money']}-c!")
         print(f" >>System: You get {self.cb.boss_weapon['name']}[lv.{self.cb.boss_weapon['level']}][ATK:{self.cb.boss_weapon['power']}]!")
         print(f" >>System: You get {self.cb.boss_armor_drop['name']}[lv.{self.cb.boss_armor_drop['level']}][DEF:{self.cb.boss_armor_drop['power']}]!")
         i = 0
@@ -572,25 +584,16 @@ class AB:
 
 
     def weapon_change(self, cha_index):
-        pass
+        self.party[cha_index].weapon['name'] = self.cb.boss_weapon['name']
+        self.party[cha_index].weapon['level'] = self.cb.boss_weapon['level']
+        self.party[cha_index].weapon['power'] = self.cb.boss_weapon['power']
+        print(f" >>System: {self.party[cha_index].name} get {self.cb.boss_weapon['name']}[lv.{self.cb.boss_weapon['level']}][ATK:{self.cb.boss_weapon['power']}]")
 
     def armor_change(self, cha_index):
-        pass
-
-
-    # def update_exp(self):
-    #     pass
-    #
-    # def update_level(self):
-    #     pass
-    #
-    #
-    # def update_money(self):
-    #     pass
-    #
-    #
-    # def item_drop_add(self):
-    #     pass
+        self.party[cha_index].armor['name'] = self.cb.boss_armor_drop['name']
+        self.party[cha_index].armor['level'] = self.cb.boss_armor_drop['level']
+        self.party[cha_index].armor['power'] = self.cb.boss_armor_drop['power']
+        print(f" >>System: {self.party[cha_index].name} get {self.cb.boss_armor_drop['name']}[lv.{self.cb.boss_armor_drop['level']}][ATK:{self.cb.boss_armor_drop['power']}]")
 
 
 
@@ -661,6 +664,7 @@ for name_boss in data_boss:
     list_boss.append(name_boss)
 
 ultimate_count = 0
+reward_count = 0
 
 while True:
     print('=' * 50)
@@ -720,7 +724,9 @@ while True:
                 print(" >>System: please choose number 1 - 4.")
                 number = input(" Enter number: ")
             if number == "1":
-                ab.attack(ultimate_count)
+                ab.attack(ultimate_count, reward_count)
+                if ab.cb.boss_hp['hp'] <= 0:
+                    reward_count += 1
                 if ultimate_count < 3:
                     ultimate_count += 1
                 elif ultimate_count == 3:
@@ -750,6 +756,18 @@ while True:
                     while number_ != "1" and number != "2" and number != "3":
                         print(" >>System: please choose 1 - 3.")
                         number_ = input(" Enter number: ")
+                elif i == 4:
+                    while number_ != "1" and number != "2" and number != "3" and number != "4":
+                        print(" >>System: please choose 1 - 4.")
+                        number_ = input(" Enter number: ")
+                elif i == 5:
+                    while number_ != "1" and number != "2" and number != "3" and number != "4" and number != "5":
+                        print(" >>System: please choose 1 - 5.")
+                        number_ = input(" Enter number: ")
+
+                print('-' * 50)
+                print(f"{'Select Character':^50}")
+                print('-' * 50)
                 i = 0
                 for cha in ab.party:
                     print(f" {i + 1}. {cha.name}")
@@ -758,7 +776,7 @@ while True:
                 number = input(" Enter number: ")
                 if i == 1:
                     while number != "1":
-                        print(" >>System: please choose 1 or 2.")
+                        print(" >>System: please choose 1.")
                         number = input(" Enter number: ")
                 elif i == 2:
                     while number != "1" and number != "2":
@@ -902,7 +920,6 @@ while True:
             print('-' * 50)
             print(f"{'Select Character':^50}")
             print('-' * 50)
-            shop_ = ""
             count = 0
             if character_1 != {}:
                 count += 1
@@ -916,7 +933,7 @@ while True:
             if count == 1:
                 shop_ = shop
             elif count == 2:
-                cha = input("Enter number: ")
+                cha = input(" Enter number: ")
                 if cha == "1":
                     shop_ = shop
                 elif cha == "2":
@@ -925,7 +942,7 @@ while True:
                     print(" >>System: please choose 1 or 2")
                     cha = input("Enter number: ")
             elif count == 3:
-                cha = input("Enter number: ")
+                cha = input(" Enter number: ")
                 if cha == "1":
                     shop_ = shop
                 elif cha == "2":
@@ -934,7 +951,7 @@ while True:
                     shop_ = shop_3
                 while cha != "1" and cha != "2" and cha != "3":
                     print(" >>System: please choose 1 - 3")
-                    cha = input("Enter number: ")
+                    cha = input(" Enter number: ")
 
             print('-' * 50)
             print(f"{'Equipment Shop':^50}")
@@ -942,18 +959,27 @@ while True:
             shop_.show_equipment_shop()
             print(" Which one you want to buy?")
             print(" - Ex. If you want Silver Sword enter w1")
-            print(" --- w from Weapon and 1 from first weapon")
+            print("   = w from Weapon and 1 from first weapon")
             number = input(" If you dont want press enter: ")
-            if number == "w1":
-                shop_.buy_equipment("Silver Sword")
-            elif number == "w2":
-                shop_.buy_equipment("Silver Bow")
-            elif number == "w3":
-                shop_.buy_equipment("Silver Hammer")
-            elif number == "a1":
-                shop_.buy_equipment("Silver Armor")
-            elif number == "a2":
-                shop_.buy_equipment("Gold Armor")
+            while True:
+                if number == "w1":
+                    shop_.buy_equipment("Silver Sword")
+                    break
+                elif number == "w2":
+                    shop_.buy_equipment("Silver Bow")
+                    break
+                elif number == "w3":
+                    shop_.buy_equipment("Silver Hammer")
+                    break
+                elif number == "a1":
+                    shop_.buy_equipment("Silver Armor")
+                    break
+                elif number == "a2":
+                    shop_.buy_equipment("Gold Armor")
+                    break
+                else:
+                    print(" >>System: please select weapon or armor that show.")
+                    number = input(" If you dont want press enter: ")
 
     elif number == "6":
         print('-' * 50)
