@@ -431,19 +431,19 @@ class AB:
                                 self.claim_reward()
                                 reward_count += 1
                             break
-                    if "use_magic_block" in cha.item_bag:
-                        print(f" {cha.name} blocks the boss attack.")
-                    if ("use_magic_block" not in cha.item_bag) and ("use_shield" not in cha.item_bag):
-                        cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
-                    if "use_shield" in cha.item_bag:
-                        print(f" {cha.name} blocks the boss attack.")
-                        self.party[0].item_bag['use_shield'] -= 1
-                        if self.party[0].item_bag['use_shield'] <= 0:
-                            self.party[0].item_bag.pop('use_shield')
                     if cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
-                    elif cha.hp['hp'] <= 0:
+                    if "use_magic_block" in cha.item_bag:
+                        print(f" >>System: {cha.name} blocks the boss attack.")
+                    if ("use_magic_block" not in cha.item_bag) and ("use_shield"+f"_{str(self.party.index(cha))}" not in cha.item_bag):
+                        cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
+                    if "use_shield"+f"_{str(self.party.index(cha))}" in cha.item_bag:
+                        print(f" >>System: {cha.name} blocks the boss attack.")
+                        self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] -= 1
+                        if self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] <= 0:
+                            self.party[0].item_bag.pop("use_shield"+f"_{str(self.party.index(cha))}")
+                    if cha.hp['hp'] <= 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
                         print(f" >>System: {cha.name} dead.")
@@ -472,15 +472,6 @@ class AB:
                                 self.claim_reward()
                                 reward_count += 1
                             break
-                    if "use_magic_block" in cha.item_bag:
-                        print(f" {cha.name} blocks the boss attack.")
-                    if ("use_magic_block" not in cha.item_bag) and ("use_shield" not in cha.item_bag):
-                        cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
-                    if "use_shield" in cha.item_bag:
-                        print(f" {cha.name} blocks the boss attack.")
-                        self.party[0].item_bag['use_shield'] -= 1
-                        if self.party[0].item_bag['use_shield'] <= 0:
-                            self.party[0].item_bag.pop('use_shield')
                     if cha.hp['hp'] > 0:
                         if "Sword" in cha.weapon['name']:
                             os.system('python ultimate_sword.py')
@@ -490,6 +481,15 @@ class AB:
                             os.system('python ultimate_hammer.py')
                         print(f" {cha.name} attack {cha.weapon['power']}!")
                         print(f" Boss hp: {self.cb.boss_hp['hp']}")
+                    if "use_magic_block" in cha.item_bag:
+                        print(f" >>System: {cha.name} blocks the boss attack.")
+                    if ("use_magic_block" not in cha.item_bag) and ("use_shield"+f"_{str(self.party.index(cha))}" not in cha.item_bag):
+                        cha.hp['hp'] -= (self.cb.boss_weapon['power'] - cha.armor['power'])
+                    if "use_shield"+f"_{str(self.party.index(cha))}" in cha.item_bag:
+                        print(f" >>System: {cha.name} blocks the boss attack.")
+                        self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] -= 1
+                        if self.party[0].item_bag["use_shield"+f"_{str(self.party.index(cha))}"] <= 0:
+                            self.party[0].item_bag.pop("use_shield"+f"_{str(self.party.index(cha))}")
                     elif cha.hp['hp'] <= 0:
                         if "Sword" in cha.weapon['name']:
                             os.system('python ultimate_sword.py')
@@ -511,12 +511,17 @@ class AB:
         print(f"{'Use Item':^50}")
         print('-' * 50)
         if item_name == "potion":
-            character.item_bag['potion'] -= 1
-            character.hp['hp'] += 20
-            if character.item_bag['potion'] <= 0:
-                character.item_bag.pop('potion')
-            print(f" >>System: {character.name} use potion.")
-            print(f" >>System: {character.name} hp: {character.hp['hp']}")
+            if character.hp['hp'] == save_hp:
+                print(" System: your hp is full!")
+            else:
+                character.item_bag['potion'] -= 1
+                character.hp['hp'] += 20
+                if character.hp['hp'] > save_hp:
+                    character.hp['hp'] = save_hp
+                if character.item_bag['potion'] <= 0:
+                    character.item_bag.pop('potion')
+                print(f" >>System: {character.name} use potion.")
+                print(f" >>System: {character.name} hp: {character.hp['hp']}")
         elif item_name == "banana":
             character.item_bag['banana'] -= 1
             character.hp['hp'] += 40
@@ -544,17 +549,19 @@ class AB:
                 character.item_bag['magic block'] -= 1
                 if character.item_bag['magic block'] <= 0:
                     character.item_bag.pop('magic block')
+            print(f" >>System: The party use magic block!")
         elif item_name == "shield":
             if "use_shield" in character.item_bag:
-                character.item_bag['use_shield'] += 1
+                character.item_bag["use_shield"+f"_{str(self.party.index(character))}"] += 1
                 character.item_bag['shield'] -= 1
                 if character.item_bag['shield'] <= 0:
                     character.item_bag.pop('shield')
             if "use_shield" not in character.item_bag:
-                character.item_bag['use_shield'] = 1
+                character.item_bag["use_shield"+f"_{str(self.party.index(character))}"] = 1
                 character.item_bag['shield'] -= 1
                 if character.item_bag['shield'] <= 0:
                     character.item_bag.pop('shield')
+            print(f" >>System: {character.name} use shield!")
 
 
     def claim_reward(self):
@@ -802,28 +809,28 @@ while True:
                     while number_ != "1" and number != "2" and number != "3" and number != "4" and number != "5":
                         print(" >>System: please choose 1 - 5.")
                         number_ = input(" Enter number: ")
-
-                print('-' * 50)
-                print(f"{'Select Character':^50}")
-                print('-' * 50)
-                i = 0
-                for cha in ab.party:
-                    print(f" {i + 1}. {cha.name}")
-                    i += 1
-                print(" Which character will you choose to use item?")
-                number = input(" Enter number: ")
-                if i == 1:
-                    while number != "1":
-                        print(" >>System: please choose 1.")
-                        number = input(" Enter number: ")
-                elif i == 2:
-                    while number != "1" and number != "2":
-                        print(" >>System: please choose 1 or 2.")
-                        number = input(" Enter number: ")
-                elif i == 3:
-                    while number != "1" and number != "2" and number != "3":
-                        print(" >>System: please choose 1 - 3.")
-                        number = input(" Enter number: ")
+                if list_item[int(number_)-1] != "magic block":
+                    print('-' * 50)
+                    print(f"{'Select Character':^50}")
+                    print('-' * 50)
+                    i = 0
+                    for cha in ab.party:
+                        print(f" {i + 1}. {cha.name}")
+                        i += 1
+                    print(" Which character will you choose to use item?")
+                    number = input(" Enter number: ")
+                    if i == 1:
+                        while number != "1":
+                            print(" >>System: please choose 1.")
+                            number = input(" Enter number: ")
+                    elif i == 2:
+                        while number != "1" and number != "2":
+                            print(" >>System: please choose 1 or 2.")
+                            number = input(" Enter number: ")
+                    elif i == 3:
+                        while number != "1" and number != "2" and number != "3":
+                            print(" >>System: please choose 1 - 3.")
+                            number = input(" Enter number: ")
                 if number == "1":
                     ab.use_item(ab.party[int(number)-1], list_item[int(number_)-1], save_hp_1)
                 elif number == "2":
