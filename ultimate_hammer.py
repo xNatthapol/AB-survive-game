@@ -3,6 +3,7 @@ import time
 
 screen = turtle.Screen()
 screen.setup(1280,720)
+screen.title("-  Ultimate Hammer  -")
 for i in range(1,158,4):
     if i < 10:
         screen.bgpic(f"hammer-0000{str(i)}.png")

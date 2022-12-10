@@ -3,6 +3,7 @@ import time
 
 screen = turtle.Screen()
 screen.setup(1280,720)
+screen.title("-  Ultimate Bow  -")
 for i in range(1,138,4):
     if i < 10:
         screen.bgpic(f"bow-0000{str(i)}.png")
