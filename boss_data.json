@@ -2,7 +2,7 @@
     "KingKong": {
         "name": "KingKong",
         "hp": {
-            "hp": 400
+            "hp": 200
         },
         "level": {
             "level": 10
@@ -27,6 +27,35 @@
             "name": "banana",
             "many": 10
 
+        }
+    },
+    "Bugtangmo": {
+        "name": "Bugtangmo",
+        "hp": {
+            "hp": 220
+        },
+        "level": {
+            "level": 25
+        },
+        "weapon": {
+            "name": "Tangmo Bow",
+            "level": 20,
+            "power": 30
+        },
+        "armor": {
+            "name": "Tangmo Armor",
+            "level": 20,
+            "power": 30
+        },
+        "money": {
+            "money": 2500
+        },
+        "exp": {
+            "exp": 10000
+        },
+        "item": {
+            "name": "tangmo",
+            "many": 10
         }
     }
 }

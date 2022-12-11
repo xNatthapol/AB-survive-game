@@ -387,7 +387,7 @@ class Boss:
                f" Level: {self.boss_level['level']}\n" \
                f" Weapon: {self.boss_weapon['name']}[lv.{self.boss_weapon['level']}][ATK:{self.boss_weapon['power']}]\n" \
                f" Money earn: {self.boss_money['money']}-c\n" \
-               f" Exp earn: {self.boss_exp_earn['exp']}\n" \
+               f" Exp earn: {self.boss_exp_earn['exp']}exp\n" \
                f" Item drop: {self.boss_item_drop['name']} {self.boss_item_drop['many']}\n" \
                f" Weapon drop: {self.boss_weapon['name']}[lv.{self.boss_weapon['level']}][ATK:{self.boss_weapon['power']}]\n" \
                f" Armor drop: {self.boss_armor_drop['name']}[lv.{self.boss_armor_drop['level']}][DEF:{self.boss_armor_drop['power']}]"
@@ -433,7 +433,6 @@ class AB:
                                     elif self.party.index(cha) == 2 and save_hp_3 != {}:
                                         cha.hp['hp'] = save_hp_3['hp']
                             self.claim_reward(save_hp_boss)
-                            reward_count += 1
                         break
                     else:
                         self.cb.boss_hp['hp'] -= cha.weapon['power']
@@ -451,7 +450,6 @@ class AB:
                                         elif self.party.index(cha) == 2 and save_hp_3 != {}:
                                             cha.hp['hp'] = save_hp_3['hp']
                                 self.claim_reward(save_hp_boss)
-                                reward_count += 1
                             break
                     if cha.hp['hp'] > 0:
                         print(f" {cha.name} attack {cha.weapon['power']}!")
@@ -484,7 +482,6 @@ class AB:
                                     elif self.party.index(cha) == 2 and save_hp_3 != {}:
                                         cha.hp['hp'] = save_hp_3['hp']
                             self.claim_reward(save_hp_boss)
-                            reward_count += 1
                         break
                     else:
                         self.cb.boss_hp['hp'] -= (cha.weapon['power']*10)
@@ -508,7 +505,6 @@ class AB:
                                         elif self.party.index(cha) == 2 and save_hp_3 != {}:
                                             cha.hp['hp'] = save_hp_3['hp']
                                 self.claim_reward(save_hp_boss)
-                                reward_count += 1
                             break
                     if cha.hp['hp'] > 0:
                         if "Sword" in cha.weapon['name']:
@@ -557,12 +553,19 @@ class AB:
                 print(f" >>System: {character.name} use potion.")
                 print(f" >>System: {character.name} hp: {character.hp['hp']}")
         elif item_name == "banana":
-            character.item_bag['banana'] -= 1
-            character.hp['hp'] += 40
-            if character.item_bag['banana'] <= 0:
-                character.item_bag.pop('banana')
-            print(f" >>System: {character.name} eat banana.")
-            print(f" >>System: {character.name} hp: {character.hp['hp']}")
+            if character.hp['hp'] == save_hp['hp']:
+                print(" System: your hp is full!")
+            elif character.hp['hp'] <= 0:
+                print(f" System: {character.name} dead!")
+            elif character.hp['hp'] > 0:
+                character.item_bag['banana'] -= 1
+                character.hp['hp'] += 20
+                if character.hp['hp'] > save_hp['hp']:
+                    character.hp['hp'] = save_hp['hp']
+                if character.item_bag['banana'] <= 0:
+                    character.item_bag.pop('banana')
+                print(f" >>System: {character.name} eat banana.")
+                print(f" >>System: {character.name} hp: {character.hp['hp']}")
         elif item_name == "revive card":
             if character.hp['hp'] <= 0:
                 character.item_bag['revive card'] -= 1
@@ -596,7 +599,20 @@ class AB:
                 if character.item_bag['shield'] <= 0:
                     character.item_bag.pop('shield')
             print(f" >>System: {character.name} use shield!")
-
+        elif item_name == "tangmo":
+            if character.hp['hp'] == save_hp['hp']:
+                print(" System: your hp is full!")
+            elif character.hp['hp'] <= 0:
+                print(f" System: {character.name} dead!")
+            elif character.hp['hp'] > 0:
+                character.item_bag['tangmo'] -= 1
+                character.hp['hp'] += 20
+                if character.hp['hp'] > save_hp['hp']:
+                    character.hp['hp'] = save_hp['hp']
+                if character.item_bag['tangmo'] <= 0:
+                    character.item_bag.pop('tangmo')
+                print(f" >>System: {character.name} eat tangmo.")
+                print(f" >>System: {character.name} hp: {character.hp['hp']}")
 
     def claim_reward(self, save_hp_boss):
         for cha in self.party:
@@ -746,8 +762,12 @@ list_boss = []
 for name_boss in data_boss:
     list_boss.append(name_boss)
 
-ultimate_count = 0
-reward_count = 0
+ultimate_count = []
+reward_count = []
+for _ in range(len(list_boss)):
+    ultimate_count.append(0)
+    reward_count.append(0)
+
 
 while True:
     print('=' * 50)
@@ -781,9 +801,10 @@ while True:
         while number not in list_number:
             print(f" >>System: please choose number 1 - {i}.")
             number = input(" Enter number: ")
-        boss_ = list_boss[int(number)-1]
-        boss_choose_data = data_boss[boss_]
-        save_hp_boss['hp'] = boss_choose_data['hp']['hp']
+        boss_name = list_boss[int(number)-1]
+        boss_choose_data = data_boss[boss_name]
+        save_hp_boss[boss_name] = {}
+        save_hp_boss[boss_name]['hp'] = boss_choose_data['hp']['hp']
         boss_choose = Boss(boss_choose_data['name'],
                            boss_choose_data['hp'],
                            boss_choose_data['level'],
@@ -807,13 +828,20 @@ while True:
                 print(" >>System: please choose number 1 - 4.")
                 number = input(" Enter number: ")
             if number == "1":
-                ab.attack(ultimate_count, reward_count, save_hp_1, save_hp_2, save_hp_3, save_hp_boss)
+                ab.attack(ultimate_count[list_boss.index(boss_name)], reward_count[list_boss.index(boss_name)], save_hp_1, save_hp_2, save_hp_3, save_hp_boss[boss_name])
                 if ab.cb.boss_hp['hp'] <= 0:
-                    reward_count += 1
-                if ultimate_count < 3:
-                    ultimate_count += 1
-                elif ultimate_count == 3:
-                    ultimate_count -= 3
+                    if reward_count[list_boss.index(boss_name)] == 0:
+                        reward_count[list_boss.index(boss_name)] += 1
+                        if save_hp_1 != {}:
+                            save_hp_1['hp'] = ab.party[0].hp['hp']
+                        if save_hp_2 != {}:
+                            save_hp_2['hp'] = ab.party[1].hp['hp']
+                        if save_hp_3 != {}:
+                            save_hp_3['hp'] = ab.party[2].hp['hp']
+                if ultimate_count[list_boss.index(boss_name)] < 3:
+                    ultimate_count[list_boss.index(boss_name)] += 1
+                elif ultimate_count[list_boss.index(boss_name)] == 3:
+                    ultimate_count[list_boss.index(boss_name)] -= 3
             elif number == "2":
                 print('-' * 50)
                 print(f"{'Select Item':^50}")

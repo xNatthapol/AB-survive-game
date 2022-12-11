@@ -2,23 +2,26 @@
     "g": {
         "password": "g",
         "item_bag": {
-            "potion": 5
+            "potion": 5,
+            "banana": 10,
+            "tangmo": 10,
+            "magic block": 1
         },
         "money": {
-            "money": 1000
+            "money": 3650
         },
         "character1": {
-            "name": "Meg",
+            "name": "Garo",
             "exp": {
-                "exp": 1000
+                "exp": 15000
             },
             "hp": {
-                "hp": 100
+                "hp": 520
             },
             "weapon": {
-                "name": "Wood Sword",
-                "level": 1,
-                "power": 10
+                "name": "Banana Sword",
+                "level": 10,
+                "power": 20
             },
             "armor": {
                 "name": "Wood Armor",
@@ -27,31 +30,31 @@
             }
         },
         "character2": {
-            "name": "Gara",
+            "name": "Karaa",
             "exp": {
-                "exp": 1000
+                "exp": 15000
             },
             "hp": {
-                "hp": 100
+                "hp": 520
             },
             "weapon": {
-                "name": "Wood Bow",
-                "level": 1,
-                "power": 10
+                "name": "Tangmo Bow",
+                "level": 20,
+                "power": 30
             },
             "armor": {
-                "name": "Wood Armor",
-                "level": 1,
-                "power": 10
+                "name": "Tangmo Armor",
+                "level": 20,
+                "power": 30
             }
         },
         "character3": {
-            "name": "Janas",
+            "name": "Doki",
             "exp": {
-                "exp": 1000
+                "exp": 15000
             },
             "hp": {
-                "hp": 100
+                "hp": 520
             },
             "weapon": {
                 "name": "Wood Hammer",
@@ -59,9 +62,9 @@
                 "power": 10
             },
             "armor": {
-                "name": "Wood Armor",
-                "level": 1,
-                "power": 10
+                "name": "Banana Armor",
+                "level": 10,
+                "power": 20
             }
         }
     }
