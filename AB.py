@@ -119,66 +119,34 @@ def add_character(username):
     with open("player_data.json", "r") as data_file:
         data = json.load(data_file)
 
-    dict_cha = {}
-    count = 0
-    print('-' * 50)
-    print(f"{'Character':^50}")
-    print('-' * 50)
-    for cha in data[username]:
-        if cha != "password":
-            if cha == "character1":
-                dict_cha["1"] = data[username][cha]['name']
-                count += 1
-            if cha == "character2":
-                dict_cha["2"] = data[username][cha]['name']
-                count += 1
-            if cha == "character3":
-                dict_cha["3"] = data[username][cha]['name']
-                count += 1
-
-    print(f" You have {count} character {3-count} slot left")
-
-    for i in range(len(dict_cha)):
-        print(f" Character {i+1}: {dict_cha[str(i+1)]}")
-    if count != 3:
-        print(" You want to add character or not?")
-        print(" 1. Add character")
-        print(" 2. No")
+    name = input(" Enter character name: ")
+    while name == "" :
+        print(" >>System: name is not empty.")
+        name = input(" Enter character name: ")
+    weapon = {}
+    print(" Starter weapon")
+    print(" 1. Sword")
+    print(" 2. Bow")
+    print(" 3. Hammer")
+    number = input(" Enter number: ")
+    while number != "1" and number != "2" and number != "3":
+        print(" >>System: please choose number 1 - 3.")
         number = input(" Enter number: ")
-        while number != "1" and number != "2":
-            print(" >>System: please choose 1 or 2.")
-            number = input(" Enter number: ")
-        if number == "1":
-            name = input(" Enter character name: ")
-            while name == "" :
-                print(" >>System: name is not empty.")
-                name = input(" Enter character name: ")
-            weapon = {}
-            print(" Starter weapon")
-            print(" 1. Sword")
-            print(" 2. Bow")
-            print(" 3. Hammer")
-            number = input(" Enter number: ")
-            while number != "1" and number != "2" and number != "3":
-                print(" >>System: please choose number 1 - 3.")
-                number = input(" Enter number: ")
-            if number == "1":
-                weapon = {"name": "Wood Sword", "level": 1, "power": 10}
-            elif number == "2":
-                weapon = {"name": "Wood Bow", "level": 1, "power": 10}
-            elif number == "3":
-                weapon = {"name": "Wood Hammer", "level": 1, "power": 10}
-            data[username][f'character{str(count+1)}'] = {
-                                            "name": name,
-                                            "exp": {"exp": 1000},
-                                            "hp": {"hp": 100},
-                                            "weapon": weapon,
-                                            "armor": {"name": "Wood Armor", "level": 1, "power": 10},
-                                        }
-            with open("player_data.json", "w") as data_file:
-                json.dump(data, data_file, indent=4)
-    else:
-        print(" >>System: No more available slots.")
+    if number == "1":
+        weapon = {"name": "Wood Sword", "level": 1, "power": 10}
+    elif number == "2":
+        weapon = {"name": "Wood Bow", "level": 1, "power": 10}
+    elif number == "3":
+        weapon = {"name": "Wood Hammer", "level": 1, "power": 10}
+    data[username][f'character{str(count+1)}'] = {
+                                    "name": name,
+                                    "exp": {"exp": 1000},
+                                    "hp": {"hp": 100},
+                                    "weapon": weapon,
+                                    "armor": {"name": "Wood Armor", "level": 1, "power": 10},
+                                }
+    with open("player_data.json", "w") as data_file:
+        json.dump(data, data_file, indent=4)
 
 
 def system_login():
@@ -713,46 +681,91 @@ print(f"{'Welcome to AB survive game':^50}")
 print('=' * 50)
 username = system_login()
 
+stop_loop = 0
+while stop_loop == 0:
+    with open("player_data.json", "r") as data_file:
+        data = json.load(data_file)
+
+    dict_cha = {}
+    count = 0
+    for cha in data[username]:
+        if cha != "password":
+            if cha == "character1":
+                dict_cha["1"] = data[username][cha]['name']
+                count += 1
+            if cha == "character2":
+                dict_cha["2"] = data[username][cha]['name']
+                count += 1
+            if cha == "character3":
+                dict_cha["3"] = data[username][cha]['name']
+                count += 1
+    if count != 3:
+        print('-' * 50)
+        print(f"{'Character':^50}")
+        print('-' * 50)
+        print(f" You have {count} character {3 - count} slot left")
+        for i in range(len(dict_cha)):
+            print(f" Character {i + 1}: {dict_cha[str(i + 1)]}")
+        print(" You want to add character or not?")
+        print(" 1. Add character")
+        print(" 2. No")
+        number = input(" Enter number: ")
+        while number != "1" and number != "2":
+            print(" >>System: please choose 1 or 2.")
+            number = input(" Enter number: ")
+        if number == "1":
+            add_character(username)
+        elif number == "2":
+            stop_loop += 1
+    else:
+        break
 
 with open("player_data.json", "r") as data_file:
     data = json.load(data_file)
 
+
 data_player = data[username]
+if save_hp_1 == {}:
+    if 'character1' in data_player:
+        character_data_1 = data_player['character1']
+        save_hp_1['hp'] = character_data_1['hp']['hp']
+        character_1 = Character(character_data_1['name'],
+                                character_data_1['exp'],
+                                character_data_1['hp'],
+                                character_data_1['weapon'],
+                                character_data_1['armor'],
+                                data_player['money'],
+                                data_player['item_bag'])
+if save_hp_2 == {}:
+    if 'character2' in data_player:
+        character_data_2 = data_player['character2']
+        save_hp_2['hp'] = character_data_2['hp']['hp']
+        character_2 = Character(character_data_2['name'],
+                                character_data_2['exp'],
+                                character_data_2['hp'],
+                                character_data_2['weapon'],
+                                character_data_2['armor'],
+                                data_player['money'],
+                                data_player['item_bag'])
 
-if 'character1' in data_player:
-    character_data_1 = data_player['character1']
-    save_hp_1['hp'] = character_data_1['hp']['hp']
-    character_1 = Character(character_data_1['name'],
-                            character_data_1['exp'],
-                            character_data_1['hp'],
-                            character_data_1['weapon'],
-                            character_data_1['armor'],
-                            data_player['money'],
-                            data_player['item_bag'])
+if save_hp_3 == {}:
+    if 'character3' in data_player:
+        character_data_3 = data_player['character3']
+        save_hp_3['hp'] = character_data_3['hp']['hp']
+        character_3 = Character(character_data_3['name'],
+                                character_data_3['exp'],
+                                character_data_3['hp'],
+                                character_data_3['weapon'],
+                                character_data_3['armor'],
+                                data_player['money'],
+                                data_player['item_bag'])
 
-
-if 'character2' in data_player:
-    character_data_2 = data_player['character2']
-    save_hp_2['hp'] = character_data_2['hp']['hp']
-    character_2 = Character(character_data_2['name'],
-                            character_data_2['exp'],
-                            character_data_2['hp'],
-                            character_data_2['weapon'],
-                            character_data_2['armor'],
-                            data_player['money'],
-                            data_player['item_bag'])
-
-
-if 'character3' in data_player:
-    character_data_3 = data_player['character3']
-    save_hp_3['hp'] = character_data_3['hp']['hp']
-    character_3 = Character(character_data_3['name'],
-                            character_data_3['exp'],
-                            character_data_3['hp'],
-                            character_data_3['weapon'],
-                            character_data_3['armor'],
-                            data_player['money'],
-                            data_player['item_bag'])
+if character_1 != {}:
+    print(character_1)
+if character_2 != {}:
+    print(character_2)
+if character_3 != {}:
+    print(character_3)
 
 
 with open("boss_data.json", "r") as data_file:
@@ -775,12 +788,10 @@ while True:
     print('=' * 50)
     print(" 1. Start Game!")
     print(" 2. Show character player info")
-    print(" 3. Add character")
-    print(" 4. Bag")
-    print(" 5. Shop")
-    print(" 6. Boss List")
-    print(" 7. Exit without save")
-    print(" 8. Exit and save")
+    print(" 3. Bag")
+    print(" 4. Shop")
+    print(" 5. Boss List")
+    print(" 6. Log out and save")
     number = input(" Enter number: ")
     while number != "1" and number != "2" and number != "3" and number != "4" and number != "5" and number != "6" and number != "7" and number != "8":
         print(" >>System: please choose number 1 - 8.")
@@ -918,54 +929,8 @@ while True:
         if character_3 != {}:
             print(character_3)
     elif number == "3":
-        add_character(username)
-        with open("player_data.json", "r") as data_file:
-            data = json.load(data_file)
-        data_player = data[username]
-        if save_hp_1 == {}:
-            if 'character1' in data_player:
-                character_data_1 = data_player['character1']
-                save_hp_1['hp'] = character_data_1['hp']['hp']
-                character_1 = Character(character_data_1['name'],
-                                        character_data_1['exp'],
-                                        character_data_1['hp'],
-                                        character_data_1['weapon'],
-                                        character_data_1['armor'],
-                                        data_player['money'],
-                                        data_player['item_bag'])
-        if save_hp_2 == {}:
-            if 'character2' in data_player:
-                character_data_2 = data_player['character2']
-                save_hp_2['hp'] = character_data_2['hp']['hp']
-                character_2 = Character(character_data_2['name'],
-                                        character_data_2['exp'],
-                                        character_data_2['hp'],
-                                        character_data_2['weapon'],
-                                        character_data_2['armor'],
-                                        data_player['money'],
-                                        data_player['item_bag'])
-
-        if save_hp_3 == {}:
-            if 'character3' in data_player:
-                character_data_3 = data_player['character3']
-                save_hp_3['hp'] = character_data_3['hp']['hp']
-                character_3 = Character(character_data_3['name'],
-                                        character_data_3['exp'],
-                                        character_data_3['hp'],
-                                        character_data_3['weapon'],
-                                        character_data_3['armor'],
-                                        data_player['money'],
-                                        data_player['item_bag'])
-
-        if character_1 != {}:
-            print(character_1)
-        if character_2 != {}:
-            print(character_2)
-        if character_3 != {}:
-            print(character_3)
-    elif number == "4":
         character_1.show_item_bag()
-    elif number == "5":
+    elif number == "4":
         print('-' * 50)
         print(f"{'Shop':^50}")
         print('-' * 50)
@@ -1093,7 +1058,7 @@ while True:
                     print(" >>System: please select weapon or armor that show.")
                     number = input(" If you dont want press enter: ")
 
-    elif number == "6":
+    elif number == "5":
         print('-' * 50)
         print(f"{'Boss List':^50}")
         print('-' * 50)
@@ -1101,10 +1066,8 @@ while True:
         for boss in list_boss:
             print(f" {i+1}. {boss}")
             i += 1
-    elif number == "7":
-        sys.exit()
 
-    elif number == "8":
+    elif number == "6":
         with open("player_data.json", "r") as data_file:
             data = json.load(data_file)
 
