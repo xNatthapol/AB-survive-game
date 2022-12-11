@@ -1,14 +1,11 @@
 # Project: AB-survive-game
 
----
 ## Project overview
 
----
 This is a survival game where you attack bosses to level up. Playing will consist of a separate turn of player versus boss, with items to be used. When the player has finished hitting the boss, the boss will bounce back and forth until one of the sides' HP is turn to 0. In the game, you can use bags to store items and money to purchase armor, weapons, potions, and other items from the shop. When you defeat the boss, he will drop a random item, weapon and armor, money, and level.
 
 ## System in game
 
----
 - This game has a register system for creating your game ID.
 - This game has a login system that allows you to log in your game ID.
 - This game has an add character system that allows you to create your character in your game ID.
@@ -20,7 +17,6 @@ This is a survival game where you attack bosses to level up. Playing will consis
 
 ## Class implemented
 
----
 - ### Character from character.py
     This class get name, exp, hp, weapon, armor, money and bag from player data and show that player character data.
 - ### Shop from shop.py
@@ -32,7 +28,6 @@ This is a survival game where you attack bosses to level up. Playing will consis
 
 ## Additional files
 
----
 - ### ultimate_sword.py
     To display the ultimate of the sword.
     - The relevant file is sword-xxxxx.png
@@ -51,10 +46,8 @@ This is a survival game where you attack bosses to level up. Playing will consis
 - ### player_data.json
     json file for storing player data.
 
-
 ## How to install this game
 
----
 First, you need to create your own folder (folder name can be whatever)
 Second, clone this file.
 
@@ -65,8 +58,6 @@ Second, clone this file.
 - Python 3.8 or higher
 
 ## How to play this game
-
----
 
 - If you're using an IDE to run the code, go to the main.py file and click run.
 - Select register to create your game ID.
