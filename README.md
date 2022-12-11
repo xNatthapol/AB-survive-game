@@ -68,3 +68,6 @@ Second, clone this file.
 - You can buy item and equipment from shop.
 - If you successfully kill the boss you will receive a reward.
 - If you want to exit the game, select Log out and save.
+
+## Github of this project
+>https://github.com/xNatthapol/AB-survive-game
