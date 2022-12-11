@@ -2,38 +2,37 @@
     "g": {
         "password": "g",
         "item_bag": {
-            "potion": 5,
-            "banana": 10
+            "potion": 6
         },
         "money": {
-            "money": 1200
+            "money": 190
         },
         "character1": {
             "name": "Garo",
             "exp": {
-                "exp": 5000
+                "exp": 1000
             },
             "hp": {
-                "hp": 300
+                "hp": 100
             },
             "weapon": {
-                "name": "Banana Sword",
-                "level": 10,
-                "power": 20
+                "name": "Wood Sword",
+                "level": 1,
+                "power": 10
             },
             "armor": {
-                "name": "Banana Armor",
-                "level": 10,
-                "power": 20
+                "name": "Wood Armor",
+                "level": 1,
+                "power": 10
             }
         },
         "character2": {
-            "name": "Taro",
+            "name": "Tara",
             "exp": {
-                "exp": 5000
+                "exp": 1000
             },
             "hp": {
-                "hp": 300
+                "hp": 100
             },
             "weapon": {
                 "name": "Wood Bow",
