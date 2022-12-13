@@ -2,7 +2,7 @@
     "KingKong": {
         "name": "KingKong",
         "hp": {
-            "hp": 200
+            "hp": 400
         },
         "level": {
             "level": 10
@@ -32,7 +32,7 @@
     "Bugtangmo": {
         "name": "Bugtangmo",
         "hp": {
-            "hp": 220
+            "hp": 1000
         },
         "level": {
             "level": 25
